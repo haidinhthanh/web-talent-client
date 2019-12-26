@@ -4,8 +4,8 @@
   "description": "talent newspaper",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development --open --hot",
-    "build": "webpack --mode production"
+    "start": "NODE_ENV=development webpack-dev-server --content-base bin/ --devtool eval --progress --colors --hot --inline",
+    "build": "NODE_ENV=production BABEL_ENV=production webpack -p --config webpack.production.config.js"
   },
   "engines": {
     "node": "10.16.3",
