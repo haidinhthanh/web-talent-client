@@ -1,6 +1,9 @@
 var path    = require('path');
 var hwp     = require('html-webpack-plugin');
 var webpack = require('webpack');
+const path  = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 config = {
     entry: path.join(__dirname, '/src/index.js'),
     output: {
@@ -35,32 +38,21 @@ config = {
         ]
     },
     plugins:[
-        new hwp({template:path.join(__dirname, '/public/index.html')})
+        new hwp({template:path.join(__dirname, '/public/index.html')}),
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+          title: 'Hot Module Replacement',
+        }),
     ],
+    output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist'),
+    },
     devServer: {
-        port: 9000,
+        contentBase: './dist',
         historyApiFallback: true,
+        hot: true
       }
-}
-
-if (process.env.HOT) {
-  config.devtool = 'eval';
-  config.entry['index.ios'].unshift('react-native-webpack-server/hot/entry');
-  config.entry['index.ios'].unshift('webpack/hot/only-dev-server');
-  config.entry['index.ios'].unshift('webpack-dev-server/client?http://localhost:8082');
-  config.output.publicPath = 'http://localhost:8082/';
-  config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
-
-  // Note: enabling React Transform and React Transform HMR:
-  config.module.loaders[0].query.plugins.push([
-    'react-transform', {
-      transforms: [{
-        transform : 'react-transform-hmr',
-        imports   : ['react'],
-        locals    : ['module']
-      }]
-    }
-  ]);
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -69,3 +61,29 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = config;
+
+
+
+
+// module.exports = {
+//   entry: {
+//      app: './src/index.js',
+// -      print: './src/print.js',
+//   },
+//   devtool: 'inline-source-map',
+//   devServer: {
+//     contentBase: './dist',
+// +     hot: true,
+//   },
+//   plugins: [
+//     // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
+//     new CleanWebpackPlugin(),
+//     new HtmlWebpackPlugin({
+//       title: 'Hot Module Replacement',
+//     }),
+//   ],
+//   output: {
+//     filename: '[name].bundle.js',
+//     path: path.resolve(__dirname, 'dist'),
+//   },
+// };
