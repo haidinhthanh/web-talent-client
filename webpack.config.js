@@ -35,7 +35,7 @@ module.exports = {
         ]
     },
     plugins:[
-        new hwp({template:path.join(__dirname, '/src/public/index.html')})
+        new hwp({template:path.join(__dirname, '/public/index.html')})
     ],
     devServer: {
         port: 9000,
