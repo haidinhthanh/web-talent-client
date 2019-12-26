@@ -1,7 +1,6 @@
 var path    = require('path');
 var hwp     = require('html-webpack-plugin');
 var webpack = require('webpack');
-const path  = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 config = {
