@@ -1,5 +1,5 @@
 export const server = {
-    url: "https://f8f57b84.ngrok.io",
+    url: "http://54.68.196.78:8080",
     username: 'user'
 }
 
