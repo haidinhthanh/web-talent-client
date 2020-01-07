@@ -1,5 +1,5 @@
 export const server = {
-    url: "https://54.68.196.78:8080",
+    url: "http://54.68.196.78:8080",
     username: 'user'
 }
 
