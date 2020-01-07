@@ -15,7 +15,7 @@ module.exports = {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react', 'es2015', 'react-hmre'],
+                    presets: ['react', 'es2015'],
                     plugins: ['transform-class-properties']
                   }
             },
