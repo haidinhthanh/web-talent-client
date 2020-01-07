@@ -15,7 +15,7 @@ module.exports = {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react', 'es2015', ''],
+                    presets: ['react', 'es2015'],
                     plugins: ['transform-class-properties']
                   }
             },
@@ -40,6 +40,6 @@ module.exports = {
     devServer: {
         // port: 9000,
         historyApiFallback: true,
-        contentBase: "./dist",
+        contentBase: "/build",
       }
 }
