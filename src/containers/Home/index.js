@@ -11,15 +11,12 @@ import { Link} from "react-router-dom";
 import axios from "axios";
 import {server, api } from "../../assets/constant";
 import LoadView from "../LoadView";
-
 class Home extends Component{
     componentDidMount(){
         const {loadPagePosts} = this.props
-        var url = server.url + api.getPopularPosts(10,0)
-        const httsAgent = new https.Agent({ rejectUnauthorized: false });
-        axios.get(url,{
-            httpsAgent: httsAgent
-        })
+        var url = server.url + api.getPopularPosts(10,0);
+        console.log(url)
+        axios.get(url)
         .then(res => {
             const pagePosts = res.data.data;
             loadPagePosts({
