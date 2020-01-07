@@ -16,7 +16,9 @@ class Home extends Component{
     componentDidMount(){
         const {loadPagePosts} = this.props
         var url = server.url + api.getPopularPosts(10,0)
-        axios.get(url)
+        axios.get(url,{
+            
+        })
         .then(res => {
             const pagePosts = res.data.data;
             loadPagePosts({
