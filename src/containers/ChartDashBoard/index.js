@@ -2,7 +2,7 @@ import React,{Component} from "react";
 import {connect} from "react-redux";
 import {loadPost} from "../../store/actions/post";
 import {css} from "aphrodite";
-import { d, fle, fled, w, bc, h, pad, m, ai, jc, lst, mih, b } from "../../styles/themes";
+import { d, fle, fled, w, bc, h, pad, m, ai, jc, lst, mih, b, ff, fw, fs } from "../../styles/themes";
 import ChartControl from "../../component/ChartControl";
 import PieChart from "../../component/PieChart";
 import BarChart from "../../component/BarChart";
@@ -79,6 +79,10 @@ class ChartDashBoard extends Component{
         }
         return (
             <div className={css(d.flex, fled.c,bc.white_smoke, pad.lg, mih.mih500)}>
+                <div className={css(ff.IBM, fw.w700, fs.lg, d.flex, ai.c, jc.c)}>
+                    Statistical Post
+                </div>
+
                 <div className={css(d.flex, bc.white, b.br_45, b.b_l)}>
                     <div className={css(d.flex,fle.flex_2,ai.c, jc.c,)}>
                         {   
@@ -170,6 +174,7 @@ class ChartDashBoard extends Component{
                 }
             })
         }
+        console.log("1111111111", cateObject)
         return cateObject;
     }
     getPolicyObject = (type, startTime, endTime, lstSelect)=>{

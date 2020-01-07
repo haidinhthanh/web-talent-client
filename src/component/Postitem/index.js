@@ -1,9 +1,9 @@
 import React,{Component} from "react";
 import {css} from "aphrodite";
-import {w, d, fled, h,  bc,  m, ff, fw, lets, clr, text,fs, linh, hov,texd, fle } from "../../styles/themes";
+import {w, d, fled, h,  bc,  m, ff, fw, lets, clr, text,fs, linh, hov,texd, fle, jc, ai } from "../../styles/themes";
 import {Link} from "react-router-dom";
 import {images as img, images_v2 as img2} from "../../assets/images";
-
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 class PostItem extends Component{
     
     extract15WordSentence = (content)=>{
@@ -17,7 +17,7 @@ class PostItem extends Component{
 
     render() {
         const {level} = this.props
-        const {_id} = this.props.item
+        const {_id, no_view} = this.props.item
         const {processor_category_classify, title, published_date, content, images} = this.props.item._source
         
         const new_content = this.extract15WordSentence(content)
@@ -41,8 +41,16 @@ class PostItem extends Component{
                     >
                         {title}
                     </Link>
-                    <div className={css(ff.Roboto, fs.esm, fw.w400, linh.h1_5, clr.dim_gray,  m.mg_t_sm)}> 
-                        {published_date.replace("T", " ")}
+                    <div className={css(d.flex, ai.c,)}>
+                        <div className={css(ff.Roboto, fs.esm, fw.w400, linh.h1_5, clr.dim_gray,  m.mg_t_sm)}> 
+                            {published_date.replace("T", " ")}
+                        </div>
+                        <div className={css(m.mg_l_md)}>
+                            <EqualizerIcon style={{width: 36, height:36, color: "#696969"}}></EqualizerIcon>
+                        </div>
+                        <div className={css(ff.Roboto, fs.esm, fw.w400, linh.h1_5, clr.dim_gray,  m.mg_t_sm,)}> 
+                            {no_view} views
+                        </div>
                     </div>
                     <div className={css(ff.Roboto, fs.esm, fw.w400, linh.h1_5, clr.dim_gray,  m.mg_t_sm)}>
                         {new_content}

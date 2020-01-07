@@ -6,7 +6,7 @@ import DropDownItem from "../DropDownItem";
 import {connect} from "react-redux";
 import {ocSideBar} from "../../store/actions/sidebar";
 import {Link} from "react-router-dom";
-
+import {FacebookShareButton, TwitterShareButton, FacebookShareCount} from "react-share";
 const style_menu_header = css(
     d.flex,
     h.h_100,
@@ -106,7 +106,7 @@ class HeaderMenu extends Component{
                     <Link className={css(d.flex,h.h_100,fs.md, ff.IBM,lets._sm,fw.w700,pad.p_lr_md,ai.c, clr.black,texd.none)}
                         to="/"
                     >
-                        Nhân Tài
+                        Talent
                     </Link>
                     <nav className={style_menu_nav}>
                             <ul className={style_ul}
@@ -118,7 +118,7 @@ class HeaderMenu extends Component{
                     </nav>   
                     <div className={css(d.flex, h.h_100)}>
                         <button className={style_bt}>
-                            <i className="fa fa-search" style={{fontSize: 20}}></i>
+                                <i className="fa fa-search" style={{fontSize: 20}}></i>
                         </button>
                         <button className={style_bt} onClick={()=>{onOpen({isOpen: !stas})}}>
                             <i className="fa fa-bars" style={{fontSize: 20}}></i>

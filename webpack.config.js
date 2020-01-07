@@ -1,14 +1,12 @@
 var path    = require('path');
 var hwp     = require('html-webpack-plugin');
-var webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-config = {
+
+module.exports = {
     entry: path.join(__dirname, '/src/index.js'),
     output: {
         filename: 'build.js',
-        path: path.join(__dirname, '/dist'),
-        publicPath: '/'
+        path: path.join(__dirname, '/build'),
+        publicPath: '/',
     },
     module:{
         rules:[
@@ -37,52 +35,11 @@ config = {
         ]
     },
     plugins:[
-        new hwp({template:path.join(__dirname, '/public/index.html')}),
-        new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-          title: 'Hot Module Replacement',
-        }),
+        new hwp({template:path.join(__dirname, '/src/public/index.html')})
     ],
-    output: {
-      filename: '[name].bundle.js',
-      path: path.resolve(__dirname, 'dist'),
-    },
     devServer: {
-        contentBase: './dist',
+        // port: 9000,
         historyApiFallback: true,
-        hot: true
+        contentBase: "./dist",
       }
 }
-
-if (process.env.NODE_ENV === 'production') {
-  config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
-  config.plugins.push(new webpack.optimize.UglifyJsPlugin());
-}
-
-module.exports = config;
-
-
-
-
-// module.exports = {
-//   entry: {
-//      app: './src/index.js',
-// -      print: './src/print.js',
-//   },
-//   devtool: 'inline-source-map',
-//   devServer: {
-//     contentBase: './dist',
-// +     hot: true,
-//   },
-//   plugins: [
-//     // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
-//     new CleanWebpackPlugin(),
-//     new HtmlWebpackPlugin({
-//       title: 'Hot Module Replacement',
-//     }),
-//   ],
-//   output: {
-//     filename: '[name].bundle.js',
-//     path: path.resolve(__dirname, 'dist'),
-//   },
-// };

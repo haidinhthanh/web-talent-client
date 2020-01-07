@@ -1,5 +1,5 @@
 export const server = {
-    url: " https://fae558a9.ngrok.io/"
+    url: "https://4b1bb914.ngrok.io"
 }
 
 

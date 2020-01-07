@@ -28,6 +28,11 @@ class SideBar extends Component{
                     stas: 0,
                     lstItem: {}
                 },
+                {
+                    name: "Location",
+                    stas: 0,
+                    lstItem: {}
+                },
             ]
         }
     }
