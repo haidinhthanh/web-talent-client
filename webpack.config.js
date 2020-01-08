@@ -6,7 +6,7 @@ module.exports = {
     output: {
         filename: 'build.js',
         path: path.join(__dirname, '/build'),
-        publicPath: '/',
+        publicPath: '/'
     },
     module:{
         rules:[
@@ -38,7 +38,6 @@ module.exports = {
         new hwp({template:path.join(__dirname, '/src/public/index.html')})
     ],
     devServer: {
-        // port: 9000,
         historyApiFallback: true,
         contentBase: "/build",
       }

@@ -3,6 +3,8 @@ import { flo, m, clr, texd, hov, d, pos, pad, bef, bc, lst, h, w, ai, jc, fw, b,
     from "../../styles/themes";
 import { css } from "aphrodite";
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import {changeChartStas} from "../../store/actions/chart";
 
 const style_ul_ul_li = css(
     d.flex,
@@ -41,7 +43,7 @@ class DropDownItem extends Component{
                 className={css(d.flex,ai.fs,fled.c,w.header_width,m.mg_l_sm,m.mg_r_sm,)}         
             >   
                 {
-                    (cate != "Analystic")?(
+                    // (cate != "Analystic")?(
                     <div 
                         className={css(d.flex,clr.black,texd.none,hov.trans_color_blue,fs.sm,fw.w700,h.h_100,w.w_100,jc.c,ai.c, )}
                         onMouseEnter={()=>{
@@ -51,19 +53,20 @@ class DropDownItem extends Component{
                     >
                         {cate}
                         <div className={itemLst.length && stas? style_cav: css(d.none)}/> 
-                    </div>):
-                    (
-                    <Link 
-                        to="/chart"
-                        className={css(d.flex,clr.black,texd.none,hov.trans_color_blue,fs.sm,fw.w700,h.h_100,w.w_100,jc.c,ai.c, )}
-                        onMouseEnter={()=>{
-                            onChangeStas(id, true)}}
-                        onMouseLeave={()=>{
-                            onChangeStas(id, false)}}
-                    >
-                        {cate}
-                        <div className={itemLst.length && stas? style_cav: css(d.none)}/> 
-                    </Link>)
+                    </div>
+                    // ):
+                    // (
+                    // <Link 
+                    //     to="/chart"
+                    //     className={css(d.flex,clr.black,texd.none,hov.trans_color_blue,fs.sm,fw.w700,h.h_100,w.w_100,jc.c,ai.c, )}
+                    //     onMouseEnter={()=>{
+                    //         onChangeStas(id, true)}}
+                    //     onMouseLeave={()=>{
+                    //         onChangeStas(id, false)}}
+                    // >
+                    //     {cate}
+                    //     <div className={itemLst.length && stas? style_cav: css(d.none)}/> 
+                    // </Link>)
 
                 }   
                 <ul className={stas? css(d.flex, fled.c, pos.absolute, pos.t_100, pad.p0, bc.black, lst.none, zi.zi2,): 
@@ -74,11 +77,18 @@ class DropDownItem extends Component{
                         onChangeStas(id,false)}} 
                 >
                     {itemLst.map((item,index)=>{
+                        console.log("link "+ "/"+cate.toLowerCase()+"/"+ item.title)
                         return (
                             <li className={style_ul_ul_li} key={index}>
                                 <Link 
                                     className={style_li_link}
                                     to={"/"+cate.toLowerCase()+"/"+ item.title}
+                                    onClick={()=>{
+                                        this.props.changeChartStas({
+                                            startRend: false,
+                                            aspect: ""
+                                        })
+                                    }}
                                 >
                                     {item.title}
                                 </Link>
@@ -91,4 +101,11 @@ class DropDownItem extends Component{
     }
 }
 
-export default DropDownItem
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeChartStas: (payload)=>{
+            dispatch(changeChartStas(payload))
+        }
+    }
+}
+export default connect(null,mapDispatchToProps)(DropDownItem)

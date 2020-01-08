@@ -7,13 +7,14 @@ import {BrowserRouter} from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "../../store";
 import {css} from "aphrodite";
-import { d, fled, w, ovfl } from "../../styles/themes";
+import { d, fled, w, ovfl, h } from "../../styles/themes";
+import history from "../History";
 class App extends Component{
     render(){
         return(
             <Provider store={store} >
-                <BrowserRouter>
-                    <div className={css(d.flex, fled.c, w.w_100,)}
+                <BrowserRouter history={history}>
+                    <div className={css(d.flex, fled.c, w.w_100, h.h_100)}
                     >
                         <Header/>
                         <Routes/>
@@ -26,4 +27,4 @@ class App extends Component{
     }
 }
 
-export default App
+export default App;

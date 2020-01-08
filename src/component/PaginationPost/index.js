@@ -12,24 +12,74 @@ class PaginationPost extends Component{
     constructor(props){
         super(props)
     }
-    onChangePage = (payload)=>{
-        this.props.loadPagePosts(payload)
-    }
 
     componentDidMount(){
-        var url = server.url + api.getNOPost
-        axios.get(url)
-        .then(res => {
-            const noPosts = res.data.data;
-            this.props.setNOPosts({
-                noPosts: noPosts
+        var {type, loc} = this.props
+        this.mapList(type, loc)
+    }
+
+    mapList= (type, loc)=>{
+        if( type =="home"){
+            var url = server.url + api.getNOPost
+            axios.get(url)
+            .then(res => {
+                const noPosts = res.data.data;
+                this.props.setNOPosts({
+                    noPosts: noPosts
+                })
             })
-        })
-        .catch(error => console.log(error));
+            .catch(error => console.log(error));
+        }
+        else if(type =="location"){
+            var url = server.url + api.getNOLocationType(loc)
+            axios.get(url)
+            .then(res => {
+                const noPosts = res.data.data;
+                this.props.setNOPosts({
+                    noPosts: noPosts
+                })
+            })
+            .catch(error => console.log(error));
+        }
+        else if(type =="feature"){
+            var url = server.url + api.getNOPostsFeatureType(loc)
+            axios.get(url)
+            .then(res => {
+                const noPosts = res.data.data;
+                this.props.setNOPosts({
+                    noPosts: noPosts
+                })
+            })
+            .catch(error => console.log(error));
+        }
+        else if(type =="feature"){
+            var url = server.url + api.getNOPostsFeatureType(loc)
+            axios.get(url)
+            .then(res => {
+                const noPosts = res.data.data;
+                this.props.setNOPosts({
+                    noPosts: noPosts
+                })
+            })
+            .catch(error => console.log(error));
+        }
+        else if(type =="search"){
+            var url = this.props.query.replace("searchPosts","getNoSearchPosts")
+            console.log("num "+ url)
+            axios.get(url)
+            .then(res => {
+                const noPosts = res.data.data;
+                this.props.setNOPosts({
+                    noPosts: noPosts
+                })
+                console.log("num "+ noPosts)
+            })
+            .catch(error => console.log(error));
+        }
     }
 
     render() {
-        const {pagePosts, level, noPosts} = this.props
+        const {pagePosts, level, noPosts, type, loc} = this.props
         return (
                 <div className={css(d.flex,fled.c)} 
                     ref={(el)=>this.fragment = el}
@@ -49,7 +99,7 @@ class PaginationPost extends Component{
                                 }
                     </div>
                     <div className={css(d.flex)}>
-                        <Pagination noPosts={noPosts} parentFragement={this.fragment} ></Pagination>
+                        <Pagination noPosts={noPosts} parentFragement={this.fragment} type={type} loc={loc}></Pagination>
                     </div>
                 </div>
         )
@@ -58,6 +108,7 @@ class PaginationPost extends Component{
 const mapStateToProps = state =>({
     pagePosts: state.pagePost.pagePosts,
     noPosts : state.pagePost.noPosts,
+    query: state.searchBar.query
 })
 
 const mapDispatchToProps = (dispatch) => {

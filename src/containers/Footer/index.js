@@ -33,7 +33,7 @@ class Footer extends Component{
                         <RecentPost noPost={2} type="footer"/>
                     </div>
                     <div className={css(d.flex, fle.flex_1, m.md, fled.c)}>
-                        <div className={css( ff.Roboto, fw.w700, fs.esm, clr.white, text.u, linh.h1_5, m.mg_l_md)}>
+                        {/* <div className={css( ff.Roboto, fw.w700, fs.esm, clr.white, text.u, linh.h1_5, m.mg_l_md)}>
                             Tags
                         </div>
                         <div className={css(d.flex, flew.w, fled.r, m.mg_t_sm)}>
@@ -51,8 +51,7 @@ class Footer extends Component{
                             </div>
                             <div className={css(b.br_45, bc.light_gray, linh.h1_5, pad.sm, m.sm)}> 
                                 Thành phố Hồ Chí Minh
-                            </div>
-                        </div>
+                            </div> */}
                     </div>
                 </div>
             </div>

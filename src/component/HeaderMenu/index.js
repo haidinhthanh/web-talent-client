@@ -6,7 +6,7 @@ import DropDownItem from "../DropDownItem";
 import {connect} from "react-redux";
 import {ocSideBar} from "../../store/actions/sidebar";
 import {Link} from "react-router-dom";
-import {FacebookShareButton, TwitterShareButton, FacebookShareCount} from "react-share";
+import {ocSearchBar} from "../../store/actions/seachbar";
 const style_menu_header = css(
     d.flex,
     h.h_100,
@@ -84,6 +84,14 @@ class HeaderMenu extends Component{
                     cate: "Analystic",
                     stas: false,
                     itemLst: [
+                        {
+                            title: "Posts",
+                            link: "#"
+                        },
+                        {
+                            title: "Views",
+                            link: "#"
+                        }
                     ],
                 },
             ],
@@ -97,34 +105,41 @@ class HeaderMenu extends Component{
     }
     
     render() {
-        console.log("1234", "rend headermenu")
         const {menu} = this.state
-        const {onOpen, stas} = this.props
+        const {onOpen, onOpenSeachBar, stas,searchStas} = this.props
         return (
-            <div className={css(d.ib, w.w_100, h.lg, bc.white_smoke, b.b_b_l)}>
-                <div className={style_menu_header}>
-                    <Link className={css(d.flex,h.h_100,fs.md, ff.IBM,lets._sm,fw.w700,pad.p_lr_md,ai.c, clr.black,texd.none)}
-                        to="/"
-                    >
-                        Talent
-                    </Link>
-                    <nav className={style_menu_nav}>
-                            <ul className={style_ul}
-                            >
-                                {menu.map((item,index)=>(
-                                    <DropDownItem id={index} key={index} cate={item.cate} stas={item.stas} itemLst={item.itemLst} onChangeStas={this.onChangeStas}/>
-                                ))}
-                            </ul>
-                    </nav>   
-                    <div className={css(d.flex, h.h_100)}>
-                        <button className={style_bt}>
-                                <i className="fa fa-search" style={{fontSize: 20}}></i>
-                        </button>
-                        <button className={style_bt} onClick={()=>{onOpen({isOpen: !stas})}}>
-                            <i className="fa fa-bars" style={{fontSize: 20}}></i>
-                        </button>
-                    </div>
-                </div>    
+            <div className={css(d.flex, w.w_100, fled.c)}>
+                <div className={css(d.ib, w.w_100, h.lg, bc.white_smoke, b.b_b_l)}>
+                    <div className={style_menu_header}>
+                        <Link className={css(d.flex,h.h_100,fs.md, ff.IBM,lets._sm,fw.w700,pad.p_lr_md,ai.c, clr.black,texd.none)}
+                            to="/"
+                        >
+                            Talent
+                        </Link>
+                        <nav className={style_menu_nav}>
+                                <ul className={style_ul}
+                                >
+                                    {menu.map((item,index)=>(
+                                        <DropDownItem id={index} key={index} cate={item.cate} stas={item.stas} itemLst={item.itemLst} onChangeStas={this.onChangeStas}/>
+                                    ))}
+                                </ul>
+                        </nav>   
+                        <div className={css(d.flex, h.h_100)}>
+                            <button className={style_bt}>
+                                    <i 
+                                        className="fa fa-search" 
+                                        style={{fontSize: 20}}
+                                        onClick={()=>{onOpenSeachBar({
+                                            isOpen: !searchStas
+                                        })}}    
+                                    ></i>
+                            </button>
+                            <button className={style_bt} onClick={()=>{onOpen({isOpen: !stas})}}>
+                                <i className="fa fa-bars" style={{fontSize: 20}}></i>
+                            </button>
+                        </div>
+                    </div>   
+                </div>
             </div>
         )
     }
@@ -132,11 +147,15 @@ class HeaderMenu extends Component{
 
 const mapStateToProps = state =>({
     stas: state.sideBar.isOpen,
+    searchStas: state.searchBar.isOpen
 })
 const mapDispatchToProps = (dispatch) => {
     return {
       onOpen: (payload) => {
         dispatch(ocSideBar(payload))
+      },
+      onOpenSeachBar: (payload) => {
+        dispatch(ocSearchBar(payload))
       },
     }
   }

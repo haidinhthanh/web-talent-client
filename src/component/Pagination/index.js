@@ -24,26 +24,70 @@ class Pagination extends React.Component {
         this.state = { pager: {} };
     }
 
-    getPageItems= (no_posts, from)=>{
-        var url = server.url + api.getPopularPosts(no_posts, from)
+    getPageItems= (no_posts, from, type, loc)=>{
         var pagePosts = []
-        axios.get(url)
-        .then(res => {
-            pagePosts = res.data.data;
-            this.props.loadPagePosts({
-                pagePosts: pagePosts
-            })
-            console.log("dinh thanh hai",this.props.isFirstOpen)
-            if(this.props.isFirstOpen){
-                this.props.changeWebStas({
-                    isFirstOpen: false
+        if(type=="home"){
+            var url = server.url + api.getPopularPosts(no_posts, from)
+            axios.get(url)
+            .then(res => {
+                pagePosts = res.data.data;
+                this.props.loadPagePosts({
+                    pagePosts: pagePosts
                 })
-            }
-            else{
+                if(this.props.isFirstOpen){
+                    this.props.changeWebStas({
+                        isFirstOpen: false
+                    })
+                }
+                else{
+                    this.props.parentFragement.scrollIntoView({behavior:"smooth"})
+                }
+            })
+            .catch(error => console.log(error));
+        }
+        else if(type =="location"){
+            var url = server.url + api.getPostByTypeLocation(loc, from, no_posts)
+            axios.get(url)
+            .then(res => {
+                pagePosts = res.data.data;
+                this.props.loadPagePosts({
+                    pagePosts: pagePosts
+                })
                 this.props.parentFragement.scrollIntoView({behavior:"smooth"})
-            }
-        })
-        .catch(error => console.log(error));
+                
+            })
+            .catch(error => console.log(error));
+        }
+        else if(type =="feature"){
+            var url = server.url + api.getPostsByTypeFeature(loc, from, no_posts)
+            axios.get(url)
+            .then(res => {
+                pagePosts = res.data.data;
+                this.props.loadPagePosts({
+                    pagePosts: pagePosts
+                })
+                this.props.parentFragement.scrollIntoView({behavior:"smooth"})
+            })
+            .catch(error => console.log(error));
+        }
+        else if(type =="search"){
+            var url = this.props.query
+            var arr_url = url.split("/")
+            var len_arr = arr_url.length
+            arr_url[len_arr-2] = from
+            arr_url[len_arr-1] = no_posts
+            var new_url = arr_url.join("/")
+            console.log("new url "+ new_url)
+            axios.get(new_url)
+            .then(res => {
+                pagePosts = res.data.data;
+                this.props.loadPagePosts({
+                    pagePosts: pagePosts
+                })
+                this.props.parentFragement.scrollIntoView({behavior:"smooth"})
+            })
+            .catch(error => console.log(error));
+        }
         return pagePosts
     }
 
@@ -59,7 +103,7 @@ class Pagination extends React.Component {
         }
     }
     setPage(page) {
-        var { noPosts, pageSize } = this.props;
+        var { noPosts, pageSize, type, loc } = this.props;
         var pager = this.state.pager;
 
         if (page < 1 || page > pager.totalPages) {
@@ -67,7 +111,7 @@ class Pagination extends React.Component {
         }
 
         pager = this.getPager(noPosts, page, pageSize);
-        this.getPageItems(pageSize,pager.startIndex);
+        this.getPageItems(pageSize,pager.startIndex, type, loc);
         this.setState({ pager: pager });
         // this.props.onChangePage({pagePosts : pageOfItems});
     }
@@ -169,6 +213,7 @@ Pagination.defaultProps = defaultProps;
 const mapStateToProps = state =>({
     pagePosts: state.pagePost.pagePosts,
     isFirstOpen: state.web.isFirstOpen,
+    query: state.searchBar.query
 })
 
 const mapDispatchToProps = (dispatch) => {

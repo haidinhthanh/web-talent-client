@@ -18,11 +18,6 @@ class SideBar extends Component{
                     stas: 0,
                     lstItem: {}
                 },
-                // {
-                //     name: "Location",
-                //     stas: 0,
-                //     lstItem: null
-                // },
                 {
                     name: "Feature",
                     stas: 0,
@@ -47,61 +42,65 @@ class SideBar extends Component{
     }
 
     getCateogoryObject = ()=>{
-        let cateObject = {}
-        console.log("cate", this.props.posts)
-        this.props.posts.map((item,index)=>{
-            const src = item._source;
-            if(src.processor_category_classify in cateObject){
-                cateObject[src.processor_category_classify] += 1
-            }
-            else{
-                cateObject[src.processor_category_classify] = 1
-            }
+        var url = server.url + api.getAllCategory()
+        axios.get(url).then(res =>{
+            let cateObject = {}
+            var newState = this.state.cate.slice()
+            const items = res.data.data
+            items.map((item)=>{
+                cateObject[item.name] = item.no_post
+            })
+            newState[0].lstItem = cateObject
+            this.setState({cate : newState})
         })
-        return cateObject
     }
     getPolicyObject = ()=>{
-        let policyObject = {
-            "Regime":0,
-            "Salary": 0,
-            "Environment": 0,
-        }
-        console.log("policy", this.props.posts)
-        this.props.posts.map((item,index)=>{
-            const src = item._source;
-            let keys = Object.keys(src.process_talent_info)
-            for (let i in keys){
-                if(src.process_talent_info[keys[i]].length){
-                    policyObject[keys[i]] += 1
-                }
+        var url = server.url + api.getAllTag()
+        axios.get(url).then(res =>{
+            let policyObject = {
+                "Regime":0,
+                "Salary": 0,
+                "Environment": 0,
             }
+            var newState = this.state.cate.slice()
+            const items = res.data.data
+            
+            items.map((item)=>{
+                policyObject[item.type] += item.no_post
+            })
+            newState[1].lstItem = policyObject
+            this.setState({cate : newState})
         })
-        return policyObject
+       
+    } 
+    getLocationObject = ()=>{
+        var url = server.url + api.getAllLocation()
+        axios.get(url).then(res =>{
+            let locationObject = {
+                "Việt Nam": 0,
+                "World":0
+            }
+            var newState = this.state.cate.slice()
+            const items = res.data.data
+            
+            items.map((item)=>{
+                locationObject[item.type_world] += item.no_post
+            
+            })
+            newState[2].lstItem = locationObject
+            this.setState({cate : newState})
+        })
+       
     } 
 
     getAllPost=()=>{
-        const {loadPost} = this.props
-        var url = server.url + api.getAllPost
-        axios.get(url)
-        .then(res => {
-            const posts = res.data.data;
-            loadPost({
-                posts: posts
-            })
-        })
-        .then(res=>{
-            var newState = this.state.cate.slice()
-            newState[0].lstItem = this.getCateogoryObject()
-            newState[1].lstItem = this.getPolicyObject()
-            this.setState({cate : newState})
-            console.log("get post", this.props.posts)
-        })
-        .catch(error => console.log(error));
+        this.getCateogoryObject()
+        this.getPolicyObject()
+        this.getLocationObject()
     } 
     render(){
         const {cate} = this.state
         const {stas, onClose, posts} = this.props
-        // this.getAllPost()
         if(stas){
             return(
                 <div className={css(pos.absolute, pos.t0,)}>

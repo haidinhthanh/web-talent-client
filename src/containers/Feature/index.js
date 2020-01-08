@@ -5,19 +5,41 @@ import {images_v2} from "../../assets/images";
 import {connect} from "react-redux";
 import SideContent from "../../component/SideContent";
 import PaginationPost from "../../component/PaginationPost";
+import { server, api } from "../../assets/constant";
+import {loadPagePost, changeWebStas} from "../../store/actions/post";
+import axios from "axios";
+import LoadView from "../LoadView";
 class Feature extends Component{
-    componentDidMount() {
+    constructor(props){
+        super(props)
+        this.state= {
+            isRend: false
+        }
+    }
+    componentDidMount(){
+        const {feature} =this.props.match.params
+        const {loadPagePosts} = this.props
+        var url = server.url + api.getPostsByTypeFeature(feature, 0, 10 )
+        axios.get(url)
+        .then(res => {
+            const pagePosts = res.data.data;
+            loadPagePosts({
+                pagePosts: pagePosts
+            })
+            this.setState({isRend: true})
+        })
+        .catch(error => console.log(error));
+    }
+    componentWillUnmount(){
+        this.setState({isRend: false})
     }
 
     render() {
         const {feature} =this.props.match.params
-        const {posts} = this.props
-        let featurePosts = posts.filter((item,index)=>{
-            if (item._source.process_talent_info[feature].length>0){
-                return item;
-            }
-        })
-        console.log(featurePosts)
+        const {pagePost} = this.props
+        let featurePosts = pagePost
+        const {isRend} = this.state
+        if (isRend){
         return (
             <div className={css(d.flex,w.w_100, fled.c, flew.w, pos.relative,) } >
                 <div className={css(d.flex,h.lg, w.w_100, h.elg, ai.c, jc.c)}>
@@ -28,18 +50,31 @@ class Feature extends Component{
                 </div>
                 <div className={css(d.flex, w.w_100, fled.r)}>
                     <div className={css(d.flex, fled.c, fle.flex_2,  pad.lg, bc.white_smoke)}>
-                        <PaginationPost posts={featurePosts} level={2}/>
+                        <PaginationPost posts={featurePosts} level={2} type="feature" loc={feature}/>
                     </div>
                     <div className={css(d.flex, fled.c, fle.flex_1, bc.white_smoke, pad.lg)}>
                         <SideContent/>
                     </div>
                 </div>
             </div>
-        )
+        )}
+        else{
+            return (
+                <div className={css(d.flex, w.w_100,h.h_100, pad.elg, pos.absolute, zi.zi3, bc.white)}>
+                    <LoadView size={200}></LoadView>
+                </div>
+                )
+        }
     }
 }
 const mapStateToProps = state =>({
-    posts: state.loadPost.posts,
+    pagePost: state.pagePost.pagePosts
 })
-
-export default connect(mapStateToProps, null)(Feature);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadPagePosts: (payload)=>{
+            dispatch(loadPagePost(payload))
+        },
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Feature);

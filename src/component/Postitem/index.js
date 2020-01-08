@@ -15,11 +15,14 @@ class PostItem extends Component{
         return new_content.concat(" ...")
     }
 
+    addDefaultSrc= (ev)=>{
+        const {level} = this.props
+        ev.target.src = ( level == 1 ? img.post_img: img2.post_img)
+      }
     render() {
         const {level} = this.props
         const {_id, no_view} = this.props.item
         const {processor_category_classify, title, published_date, content, images} = this.props.item._source
-        
         const new_content = this.extract15WordSentence(content)
         return (
             <div className={css(d.flex, fled.c, m.lg, w.w_40, bc.white,)}>
@@ -27,6 +30,7 @@ class PostItem extends Component{
                     src={images && images.length? images[0]: ( level == 1 ? img.post_img: img2.post_img)} 
                     className={css(w.w_100,h.elg)} 
                     style={{objectFit:"fill"}}
+                    onError={this.addDefaultSrc}
                 />
                 <div class={css(d.flex, m.lg, fled.c)}>
                     <Link 
@@ -43,7 +47,7 @@ class PostItem extends Component{
                     </Link>
                     <div className={css(d.flex, ai.c,)}>
                         <div className={css(ff.Roboto, fs.esm, fw.w400, linh.h1_5, clr.dim_gray,  m.mg_t_sm)}> 
-                            {published_date.replace("T", " ")}
+                            {published_date.replace("T", " ").replace("Z", "").slice(0,16)}
                         </div>
                         <div className={css(m.mg_l_md)}>
                             <EqualizerIcon style={{width: 36, height:36, color: "#696969"}}></EqualizerIcon>

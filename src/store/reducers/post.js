@@ -1,5 +1,4 @@
 import {LOAD_POST, LOAD_PAGE_POST, SET_NO_POSTS, LOAD_RECENT_POST, VIEW_POST, CHANGE_WEB_STAS} from "../type";
-import { hash} from "../../assets/hash_config";
 
 
 export const loadPost = (state = {posts:[]}, {type, payload})=>{

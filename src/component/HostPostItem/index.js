@@ -8,7 +8,7 @@ class HostPostItem extends Component{
         const {item , level} = this.props
         const {_id} = item
         const {images,title, published_date } = item._source
-        const date = published_date.replace("T", " ")
+        const date = published_date.replace("T", " ").replace("Z","").slice(0,16)
         return(
             <div className={css(d.flex, fled.r, w.w_100, h.lg,pad.esm, m.mg_b_lg)}>
                 <img src={images && images.length? images[0]: ( level == 1 ? img.post_img: img2.post_img)} className={css(w.lg, fle.flex_1)} style={{objectFit:"cover"}}></img>

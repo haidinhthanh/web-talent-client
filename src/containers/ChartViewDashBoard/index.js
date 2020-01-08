@@ -10,7 +10,7 @@ import {server, api} from "../../assets/constant";
 import axios from "axios";
 import {changeChartStas} from "../../store/actions/chart";
 import cursor from "../../styles/cursor";
-class ChartDashBoard extends Component{
+class ChartViewDashBoard extends Component{
     constructor(props){
         super(props)
     }
@@ -29,7 +29,6 @@ class ChartDashBoard extends Component{
     renderChart = (chartType, aspect, dataOb)=>{
         if(chartType == "Pie Chart"){
             if(aspect == "Content Type"){
-                console.log(dataOb)
                 if (this.isEmpty(dataOb)){
                     return(<div className={css(w.w_70,bc.white, pad.sm,)}>
                         
@@ -94,8 +93,7 @@ class ChartDashBoard extends Component{
                         })
                     }}
                 >
-
-                    Statistical Post
+                    Statistical Post Views
                 </div>
 
                 <div className={css(d.flex, bc.white, b.br_45, b.b_l)}>
@@ -164,10 +162,10 @@ class ChartDashBoard extends Component{
                 let currentTime = new Date(src.published_date)
                 if(currentTime >= startTime && currentTime <= endTime){
                     if(src.processor_category_classify in cateObject){
-                        cateObject[src.processor_category_classify] += 1
+                        cateObject[src.processor_category_classify] += item.no_view
                     }
                     else{
-                        cateObject[src.processor_category_classify] = 1
+                        cateObject[src.processor_category_classify] = item.no_view
                     }
                 }
             })
@@ -187,12 +185,11 @@ class ChartDashBoard extends Component{
                 if(currentTime >= startTime && currentTime <= endTime){
                     let field = this.getDayMonthYear(currentTime).substring(0,7) + "-01"
                     if(lstSelect.includes(src.processor_category_classify)){
-                        cateObject[src.processor_category_classify][field] +=1
+                        cateObject[src.processor_category_classify][field] += item.no_view
                     }
                 }
             })
         }
-        console.log("1111111111", cateObject)
         return cateObject;
     }
     getPolicyObject = (type, startTime, endTime, lstSelect)=>{
@@ -211,7 +208,7 @@ class ChartDashBoard extends Component{
                     let keys = Object.keys(src.processor_talent_info)
                     for (let i in keys){
                         if(src.processor_talent_info[keys[i]].length){
-                            policyObject[keys[i]] += 1
+                            policyObject[keys[i]] += item.no_view
                         }
                     }
                 }
@@ -234,7 +231,7 @@ class ChartDashBoard extends Component{
                     let keys = Object.keys(src.processor_talent_info)
                     lstSelect.forEach( element=>{
                         if(src.processor_talent_info[element].length > 0){
-                            policyObject[element][field] += 1
+                            policyObject[element][field] += item.no_view
                         } 
                     })
                 }
@@ -243,6 +240,7 @@ class ChartDashBoard extends Component{
         
         return policyObject;
     } 
+    
 
     getDayMonthYear= (dateObj)=>{
         var month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -282,4 +280,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(ChartDashBoard)
+export default connect(mapStateToProps,mapDispatchToProps)(ChartViewDashBoard)

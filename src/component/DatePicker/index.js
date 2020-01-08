@@ -32,7 +32,6 @@ class DatePicker extends Component{
         <Grid container justify="space-around">
           <KeyboardDatePicker
             margin="normal"
-            id="date-picker-dialog"
             label="Date picker dialog"
             format="dd/MM/yyyy"
             value={selectedDate}

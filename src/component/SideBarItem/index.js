@@ -54,6 +54,23 @@ class SideBarItem extends Component{
                                     </ul>
                                 )
                             }
+                            if(cateItem.name == "Location"){
+                                return(
+                                    <ul className={css(d.flex, pad.p0, fled.c, lst.none, m.mg_t_sm)}>
+                                        <li className={css(d.flex, fled.r, jc.sb, ff.IBM, fw.w500, fs.sm, m.esm,)}>
+                                            <Link
+                                                to={"/location/"+ item}
+                                                className={css(ff.IBM, fw.w500, fs.sm, clr.black, texd.none, hov.trans_color_lgray)}
+                                            >
+                                                {item}
+                                            </Link>
+                                            <span className={css(bc.light_gray, b.br50, d.flex,pad.p_lr_esm)}> 
+                                                {cateItem.lstItem[item]}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                )
+                            }
                             else{
                                 return null;
                             }

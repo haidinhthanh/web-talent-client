@@ -41,7 +41,7 @@ class RecentPost extends Component{
                                         {src.title}
                                     </Link>
                                     <div className={css(ff.IBM, fs.esm, linh.h1_25, clr.dim_gray)}>
-                                        {src.published_date.replace("T", " ")}
+                                        {src.published_date.replace("T", " ").replace("Z", "").slice(0,16)}
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@ class RecentPost extends Component{
                                         {src.title}
                                     </Link>
                                     <div className={css(ff.IBM, fs.esm, linh.h1_25, clr.dim_gray)}>
-                                        {src.published_date.replace("T", " ")}
+                                        {src.published_date.replace("T", " ").replace("Z","").slice(0,16)}
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@ class RecentPost extends Component{
                                         {src.title}
                                     </div>
                                     <div className={css(ff.IBM, fs.esm, linh.h1_25, clr.dim_gray)}>
-                                        {src.published_date.replace("T", " ")}
+                                        {src.published_date.replace("T", " ").replace("Z","").slice(0,16)}
                                     </div>
                                 </div>
                             </div>

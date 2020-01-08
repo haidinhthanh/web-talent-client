@@ -11,11 +11,11 @@ import { Link} from "react-router-dom";
 import axios from "axios";
 import {server, api } from "../../assets/constant";
 import LoadView from "../LoadView";
+
 class Home extends Component{
     componentDidMount(){
         const {loadPagePosts} = this.props
-        var url = server.url + api.getPopularPosts(10,0);
-        console.log(url)
+        var url = server.url + api.getPopularPosts(10,0)
         axios.get(url)
         .then(res => {
             const pagePosts = res.data.data;
@@ -30,8 +30,6 @@ class Home extends Component{
     }
     render(){
         const {popularPosts} = this.props;
-        
-        console.log("dinh thanh hai 2",this.props.isFirstOpen)
         var isRend = false
         if(popularPosts.length>0){
             isRend = true
@@ -59,7 +57,7 @@ class Home extends Component{
                                         {src.title}
                                     </Link>
                                     <div className={css(ff.Roboto, fw.w500, lets._esm, clr.white_smoke, text.u, fs.esm, m.mg_t_lg)}>
-                                        {src.published_date.replace("T", " ")}
+                                        {src.published_date.replace("T", " ").replace("Z", "").slice(0,16)}
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +91,7 @@ class Home extends Component{
                                 Don't miss to check out our most popular posts
                             </div>
                         </div>
-                        <PaginationPost level={1}/>
+                        <PaginationPost level={1} type="home" loc=""/>
                     </div>
                     <div className={css(d.flex, fled.c, w.w_30, bc.white_smoke, pad.lg)}>
                         <SideContent/>

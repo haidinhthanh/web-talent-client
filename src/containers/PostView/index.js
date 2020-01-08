@@ -10,8 +10,8 @@ import {server, api} from "../../assets/constant";
 import {viewPost} from "../../store/actions/post";
 import LoadView from "../LoadView";
 import EqualizerIcon from '@material-ui/icons/Equalizer';
+import {FacebookShareButton, TwitterShareButton, FacebookIcon, TwitterIcon} from "react-share";
 class PostView extends Component{
-
     getPost = (id)=>{
         var url = server.url + api.getPostById(id)
         axios.get(url).then(res=>{
@@ -30,7 +30,6 @@ class PostView extends Component{
     componentDidUpdate(prevProps, prevState){
         const {id} =this.props.match.params
         if( id !== prevProps.match.params.id){
-            console.log("đinh ")
             this.getPost(id)
         }
     }
@@ -40,17 +39,27 @@ class PostView extends Component{
         var isRend = Object.keys(post).length> 0 ? true : false;
         if(isRend){
             const {no_view} = post
-            const {processor_category_classify, title, published_date, content, images, summary, process_talent_info, processor_ner_loc, source} = post._source
-            const locArr = [...processor_ner_loc.cities, ...processor_ner_loc.provinces, ...processor_ner_loc.nations]
-            const tlInfoArr = []
-            for (let index in Object.keys(process_talent_info)){
-                var key = Object.keys(process_talent_info)[index]
-                if(process_talent_info[key].length > 0){
-                    tlInfoArr.push(key)
-                }
+            const {url,processor_category_classify, title, published_date, content, images, summary, processor_talent_info, processor_ner_loc, source} = post._source
+            var locArr = [...processor_ner_loc.cities, ...processor_ner_loc.provinces, ...processor_ner_loc.nations]
+            var tlInfoArr = [...processor_talent_info.Salary, ...processor_talent_info.Environment, ...processor_talent_info.Regime]
+            var locArr = locArr.filter(function(elem, index, self) {
+                return index === self.indexOf(elem);
+            })
+            var tlInfoArr = tlInfoArr.filter(function(elem, index, self) {
+                return index === self.indexOf(elem);
+            })
+            var page_source = ""
+            if(typeof source === 'undefined'){
+                page_source = url
             }
+            else{
+                page_source = source
+            }
+            console.log(":::" +typeof summary)
             return (
-                <div className={css(d.flex, w.w_100)} >
+                <div className={css(d.flex, w.w_100)} 
+                ref ={(el)=> this.fragment = el}
+                >
                     <div className={css(d.flex, w.w_100, fled.r,)}>
                         <div className={css(d.flex, fled.c, fle.flex_2,  pad.lg, bc.white_smoke)}>
                             <div className={css(d.flex, bc.white, fled.c,)}>
@@ -58,7 +67,6 @@ class PostView extends Component{
                                     src={images && images.length? images[0]: ( level == 1 ? img.post_img: img2.post_img)} 
                                     className={css(w.w_100,)} 
                                     style={{objectFit:"fill"}}
-                                    ref ={(el)=> this.fragment = el}
                                 />
                                 <div className={css(d.flex, pad.lg, fled.c)} >
                                     <Link
@@ -72,7 +80,7 @@ class PostView extends Component{
                                     </div>
                                     <div className={css(d.flex, fled.r)}>
                                         <div className={css(ff.Roboto, fs.esm, fw.w400, linh.h1_5, clr.dim_gray,  m.mg_t_sm)}>
-                                            {published_date}
+                                            {published_date.replace("T"," ").replace("Z","").slice(0,16)}
                                         </div>
                                         <div className={css(m.mg_l_md)}>
                                             <EqualizerIcon style={{width: 30, height:30, color: "#696969"}}></EqualizerIcon>
@@ -81,9 +89,11 @@ class PostView extends Component{
                                             {no_view} views
                                         </div>
                                     </div>
-                                    <div className={css(ff.Roboto, fs.sm, fw.w400, linh.h1_5, clr.dim_gray,  m.mg_t_sm, bc.white_smoke, pad.md, m.mg_t_md)}>
-                                        {summary}
-                                    </div>
+                                    {
+                                        typeof summary == "undefined" || summary.replace(" ","") ==""?(<div></div>):(<div className={css(ff.Roboto, fs.sm, fw.w400, linh.h1_5, clr.dim_gray,  m.mg_t_sm, bc.white_smoke, pad.md, m.mg_t_md)}>
+                                            {summary}
+                                        </div>)
+                                    }
                                     <div className={css(ff.Roboto, fs.sm, fw.w400, linh.h1_5, clr.black,  m.mg_t_lg)}>
                                         {content}
                                     </div>
@@ -135,26 +145,26 @@ class PostView extends Component{
                                     <div className={css( ff.IBM, fw.w700, fs.md, linh.h1_5, )}>
                                         Source:
                                     </div>
-                                    <a href={source} className={css(texd.none, clr.black, hov.trans_color_dgray)}>
-                                        {source}
+                                    <a href={page_source} className={css(texd.none, clr.black, hov.trans_color_dgray)}>
+                                        {page_source}
                                     </a>
                                 </div>
                             </div>
-                            <div className={css(d.flex, bc.white, ai.c, pad.md, jc.fe)}>
+                            <div className={css(d.flex, bc.white, ai.c, pad.md, jc.fe,)}>
                                 <div className={css(fle.flex_1)}></div>
                                 <div className={css(fle.flex_1, d.flex, fled.r)}>
-                                    <div className={css( fw.w600, fs.md, pad.p_lr_sm)}>
+                                    <div className={css( fw.w600, fs.md, pad.p_lr_sm, m.mg_l_sm)}>
                                         Share:
                                     </div>
                                     <li className={css(lst.none, d.inline, pad.p_lr_sm, d.flex)}>
-                                        <a href="#" className={css(hov.trans_color_blue,clr.black)}>
-                                            <i className="fa fa-facebook-square" style={{fontSize:32}}/>
-                                        </a>
+                                        <FacebookShareButton url={"https://stackoverflow.com/questions/56724789/react-facebook-share-button-does-not-work"}>
+                                            <FacebookIcon size={32} borderRadius={20}/>
+                                        </FacebookShareButton>
                                     </li>
                                     <li className={css(lst.none, d.inline, pad.p_lr_sm, d.flex)}>
-                                        <a href="#" className={css(hov.trans_color_blue,clr.black)}>
-                                            <i className="fa fa-twitter" style={{fontSize:32}}></i>
-                                        </a>
+                                        <TwitterShareButton url={"https://stackoverflow.com/questions/56724789/react-facebook-share-button-does-not-work"}>
+                                            <TwitterIcon size={32} borderRadius={20}></TwitterIcon>
+                                        </TwitterShareButton>
                                     </li>
                                 </div>
                             </div>
