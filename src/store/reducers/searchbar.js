@@ -2,8 +2,8 @@ import {OC_SEARCH_BAR, SEARCH_QUERY, CHANGE_SEARCH_STAT} from "../type";
 
 export const searchBar = (state = {isOpen: false, query: "",
 text:"",
-startDate: "",
-endDate: "",
+startDate: "2019-01-01T00:00:00",
+endDate: "2020-12-01T00:00:00",
 cate: "",
 tag: "",
 loc:  "",}, {type, payload})=>{

@@ -40,15 +40,15 @@ class NavBar extends Component{
                     <nav className={css(m.mg_l_auto)}>
                         <ul className={css(pad.p_lr_sm,d.flex)}>
                             <li className={css(lst.none, d.inline, pad.p_lr_sm, d.flex)}>
-                                <a href="/" className={css(hov.trans_color_blue,clr.black)}>
-                                    <FacebookShareButton url={"https://stackoverflow.com/questions/56724789/react-facebook-share-button-does-not-work"}>
+                                <a href="https://talentvietnam.netlify.com" className={css(hov.trans_color_blue,clr.black)}>
+                                    <FacebookShareButton url={"https://talentvietnam.netlify.com"}>
                                         <FacebookIcon size={32} borderRadius={20}/>
                                     </FacebookShareButton>
                                 </a>
                             </li>
                             <li className={css(lst.none, d.inline, pad.p_lr_sm, d.flex)}>
-                                <a href="/" className={css(hov.trans_color_blue,clr.black)}>
-                                    <TwitterShareButton url={"https://stackoverflow.com/questions/56724789/react-facebook-share-button-does-not-work"}>
+                                <a href="https://talentvietnam.netlify.com" className={css(hov.trans_color_blue,clr.black)}>
+                                    <TwitterShareButton url={"https://talentvietnam.netlify.com"}>
                                         <TwitterIcon size={32} borderRadius={20}></TwitterIcon>
                                     </TwitterShareButton>
                                 </a>

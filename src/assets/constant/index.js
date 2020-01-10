@@ -1,5 +1,6 @@
 export const server = {
-    url: "https://54.68.196.78:8080"
+    // url: "https://54.68.196.78:8080"
+    url: "https://localhost:8080",
 }
 
 
@@ -30,5 +31,7 @@ export const api = {
     },
     getAllCategory:()=>"/api/statistical/getAllCategory",
     getAllTag:()=> "/api/statistical/getAllTag",
-    getAllLocation:()=> "/api/statistical/getAllLocation"
+    getAllLocation:()=> "/api/statistical/getAllLocation",
+    getPostByCategory: (cate, from, no)=> "/api/newspaper/getPostByCategory/" + cate + "/" +from +"/" +no,
+    getNOPostCategory:(cate)=> "/api/newspaper/getNoCategoryPost/" + cate
 }

@@ -16,6 +16,7 @@ import { Redirect } from "react-router-dom";
 const select_cate = ['Công nghệ', 'Giáo dục','Giải trí','Khoa học','Kinh tế','Pháp luật','Thế giới','Thể thao','Văn hóa','Xã hội', 'Y tế']
 const select_loc =["Việt Nam", "World"]
 const select_tag =["Salary", "Environment", "Regime"]
+
 class SearhBar extends Component{
     constructor(props){
         super(props)
@@ -47,7 +48,7 @@ class SearhBar extends Component{
                         <div className={css(fs.md, fw.w700, clr.black)}> StartDate :</div>
                         <div>
                             <DatePicker
-                                time={"2019-01-01T00:00:00"}
+                                time={startDate}
                                 onChangeStas={(time)=>{
                                     changeSearchStat({startDate: time})
                                 }}
@@ -92,32 +93,16 @@ class SearhBar extends Component{
                         </div>
                     </div>    
                     <div className={css(d.flex, w.w_100, ai.c,jc.sa, zi.zi3,  m.mg_b_sm)}>
-                        {/* <Button
-                            // to={"/search/"+url}
-                            onClick={()=>{
-                                const {query, startDate, endDate, loc, cate, tag} = this.state
-                                var url = api.searchPosts(query,this.getDayMonthYear(startDate).substring(0,10)+ "T00:00:00Z",this.getDayMonthYear(endDate).substring(0,10)+"T00:00:00Z", loc, cate, tag,0, 10)
-                                // ocSearchBar({
-                                //     isOpen:false
-                                // }) 
-                                var arr_url = url.split("/")
-                                arr_url[0] = "q"
-                                url = arr_url.join("?")
-                                console.log("url "+ url)
-                                // history.push({pathname: '/search/'+ url.replace("/", "?") })                          
-                            }}
-                            className={css(texd.none)}
-                        > */}
                             <Button 
                                 variant="contained" 
                                 color="secondary" 
                                 onClick={()=>{
-                                    // const {query, startDate, endDate, loc, cate, tag} = this.state
-                                    var url = api.searchPosts(query,this.getDayMonthYear(startDate).substring(0,10)+ "T00:00:00Z",this.getDayMonthYear(endDate).substring(0,10)+"T00:00:00Z", loc, cate, tag,0, 10)
+                                    var url = api.searchPosts(text,this.getDayMonthYear(startDate).substring(0,10)+ "T00:00:00Z",this.getDayMonthYear(endDate).substring(0,10)+"T00:00:00Z", loc, cate, tag,0, 10)
+                                    
                                     ocSearchBar({
                                         isOpen:false
                                     }) 
-                                    saveSearchQuery({
+                                    changeSearchStat({
                                         query: server.url+ url
                                     })
                                     var arr_url = url.split("/")
@@ -128,7 +113,6 @@ class SearhBar extends Component{
                                 >
                                 Search
                             </Button>
-                        {/* </Button> */}
                         <Button 
                             variant="contained" 
                             color="secondary" 

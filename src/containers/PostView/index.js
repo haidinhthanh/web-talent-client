@@ -38,7 +38,7 @@ class PostView extends Component{
         const {level, post} = this.props
         var isRend = Object.keys(post).length> 0 ? true : false;
         if(isRend){
-            const {no_view} = post
+            const {no_view, _id} = post
             const {url,processor_category_classify, title, published_date, content, images, summary, processor_talent_info, processor_ner_loc, source} = post._source
             var locArr = [...processor_ner_loc.cities, ...processor_ner_loc.provinces, ...processor_ner_loc.nations]
             var tlInfoArr = [...processor_talent_info.Salary, ...processor_talent_info.Environment, ...processor_talent_info.Regime]
@@ -161,12 +161,12 @@ class PostView extends Component{
                                         Share:
                                     </div>
                                     <li className={css(lst.none, d.inline, pad.p_lr_sm, d.flex)}>
-                                        <FacebookShareButton url={"https://stackoverflow.com/questions/56724789/react-facebook-share-button-does-not-work"}>
+                                        <FacebookShareButton url={"http://talentvietnam.netlify.com" + "/view_post/"+ _id}>
                                             <FacebookIcon size={32} borderRadius={20}/>
                                         </FacebookShareButton>
                                     </li>
                                     <li className={css(lst.none, d.inline, pad.p_lr_sm, d.flex)}>
-                                        <TwitterShareButton url={"https://stackoverflow.com/questions/56724789/react-facebook-share-button-does-not-work"}>
+                                        <TwitterShareButton url={"http://talentvietnam.netlify.com" + "/view_post/"+ _id}>
                                             <TwitterIcon size={32} borderRadius={20}></TwitterIcon>
                                         </TwitterShareButton>
                                     </li>

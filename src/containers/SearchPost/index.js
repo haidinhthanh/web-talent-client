@@ -21,7 +21,7 @@ class SearchPost extends Component{
     }
     componentDidMount(){
         var {url} =this.props.match.params
-        const {pagePost, saveSearchQuery} =this.props
+        const {pagePost, saveSearchQuery,} =this.props
         var arr_url = url.split("?")
         arr_url[0] = ""
         url = arr_url.join("/")
@@ -41,8 +41,15 @@ class SearchPost extends Component{
     }
     componentDidUpdate(prevProps, prevState){
         if ((this.props.query !== prevProps.query)) {
+            var {url} =this.props.match.params
+            const {pagePost, saveSearchQuery} =this.props
+            var arr_url = url.split("?")
+            arr_url[0] = ""
+            url = arr_url.join("/")
+            saveSearchQuery({
+                query: server.url+ url
+            })
             const {loadPagePosts, query} = this.props
-            console.log("query "+query)
             axios.get(query)
             .then(res => {
                 const pagePosts = res.data.data;
@@ -58,9 +65,9 @@ class SearchPost extends Component{
         this.setState({isRend: false})
     }
     render() {
-        const {pagePost, saveSearchQuery} =this.props
+        const {pagePost, saveSearchQuery, query} =this.props
         const {isRend} = this.state
-        
+        console.log("urt " + query)
         if (isRend){
         return (
             <div className={css(d.flex,w.w_100, fled.c, flew.w, pos.relative,) } >

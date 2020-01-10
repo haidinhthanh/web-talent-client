@@ -11,12 +11,12 @@ class SideContent extends Component{
                     <div className={css(ff.IBM, fw.w700, linh.h1_25, fs.emd, m.md,)}>Social Link</div>
                     <div className={css(d.flex, fled.r,)}>
                         <div className={css(d.flex,bc.white_smoke, h.md, w.md, b.br50, ai.c, jc.c, m.sm)}>
-                            <FacebookShareButton url={"https://stackoverflow.com/questions/56724789/react-facebook-share-button-does-not-work"}>
+                            <FacebookShareButton url={"https://talentvietnam.netlify.com"}>
                                 <FacebookIcon size={32} borderRadius={20}/>
                             </FacebookShareButton>
                         </div>
                         <a className={css(d.flex,bc.white_smoke, h.md, w.md, b.br50, ai.c, jc.c, m.sm)}>
-                            <TwitterShareButton url={"https://stackoverflow.com/questions/56724789/react-facebook-share-button-does-not-work"}>
+                            <TwitterShareButton url={"https://talentvietnam.netlify.com"}>
                                 <TwitterIcon size={32} borderRadius={20}></TwitterIcon>
                             </TwitterShareButton>
                         </a>

@@ -17,6 +17,12 @@ class PaginationPost extends Component{
         var {type, loc} = this.props
         this.mapList(type, loc)
     }
+    componentDidUpdate(prevProps, prevState){
+        if ((this.props.pagePost !== prevProps.pagePost)) {
+            var {type, loc} = this.props
+            this.mapList(type, loc)
+        }
+    }
 
     mapList= (type, loc)=>{
         if( type =="home"){
@@ -52,8 +58,9 @@ class PaginationPost extends Component{
             })
             .catch(error => console.log(error));
         }
-        else if(type =="feature"){
-            var url = server.url + api.getNOPostsFeatureType(loc)
+        else if(type =="search"){
+            var url = this.props.query.replace("searchPosts","getNoSearchPosts")
+            console.log("re "+ url)
             axios.get(url)
             .then(res => {
                 const noPosts = res.data.data;
@@ -63,16 +70,14 @@ class PaginationPost extends Component{
             })
             .catch(error => console.log(error));
         }
-        else if(type =="search"){
-            var url = this.props.query.replace("searchPosts","getNoSearchPosts")
-            console.log("num "+ url)
+        else if(type == "category"){
+            var url = server.url + api.getNOPostCategory(loc)
             axios.get(url)
             .then(res => {
                 const noPosts = res.data.data;
                 this.props.setNOPosts({
                     noPosts: noPosts
                 })
-                console.log("num "+ noPosts)
             })
             .catch(error => console.log(error));
         }

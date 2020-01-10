@@ -77,7 +77,6 @@ class Pagination extends React.Component {
             arr_url[len_arr-2] = from
             arr_url[len_arr-1] = no_posts
             var new_url = arr_url.join("/")
-            console.log("new url "+ new_url)
             axios.get(new_url)
             .then(res => {
                 pagePosts = res.data.data;
@@ -85,6 +84,19 @@ class Pagination extends React.Component {
                     pagePosts: pagePosts
                 })
                 this.props.parentFragement.scrollIntoView({behavior:"smooth"})
+            })
+            .catch(error => console.log(error));
+        }
+        else if (type == "category"){
+            var url = server.url + api.getPostByCategory(loc, from, no_posts)
+            axios.get(url)
+            .then(res => {
+                pagePosts = res.data.data;
+                this.props.loadPagePosts({
+                    pagePosts: pagePosts
+                })
+                this.props.parentFragement.scrollIntoView({behavior:"smooth"})
+                
             })
             .catch(error => console.log(error));
         }
