@@ -1,9 +1,8 @@
 import React,{Component} from "react";
 import { clr, d, h, w, fle, fled, bc, ai, jc, ff, fw, linh, fs, opa, pos, flew, zi, fil, pad } from "../../styles/themes";
 import { css } from "aphrodite";
-import {images_v2} from "../../assets/images";
+import {image} from "../../assets/images";
 import {connect} from "react-redux";
-import {cities, nations, provinces} from "../../assets/location_data";
 import {loadPagePost, changeWebStas} from "../../store/actions/post";
 import SideContent from "../../component/SideContent";
 import PaginationPost from "../../component/PaginationPost";
@@ -29,7 +28,6 @@ class Location extends Component{
         }
         const {loadPagePosts} = this.props
         var url = server.url + api.getPostByTypeLocation(type, 0, 10 )
-        console.log(url)
         axios.get(url)
         .then(res => {
             const pagePosts = res.data.data;
@@ -60,7 +58,7 @@ class Location extends Component{
         return (
             <div className={css(d.flex,w.w_100, fled.c, flew.w, pos.relative,) } >
                 <div className={css(d.flex,h.lg, w.w_100, h.elg, ai.c, jc.c)}>
-                    <img src={images_v2.loc_bg} className={css(pos.absolute, w.w_100, h.elg, zi.zi1,)} style={{objectFit:"cover"}}></img>
+                    <img src={image.location_bg} className={css(pos.absolute, w.w_100, h.elg, zi.zi1,)} style={{objectFit:"cover"}}></img>
                     <div className={css(d.flex, ff.IBM, fw.w700, linh.h1_25, clr.white, fs.lg,zi.zi3)}>
                         Location:{location}
                     </div>

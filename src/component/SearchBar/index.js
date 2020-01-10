@@ -2,7 +2,7 @@ import React,{Component} from "react";
 import { w, d, fled, h, m, fle, ff, fw, clr, jc, fs, linh, hov, texd, bc, ai, pos, zi, pad, b, lst,} from "../../styles/themes"
 import {css, StyleSheet} from "aphrodite";
 import {connect} from "react-redux";
-import {ocSearchBar, saveSearchQuery} from "../../store/actions/seachbar";
+import {ocSearchBar, saveSearchQuery, changeSearchStat} from "../../store/actions/seachbar";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import DatePicker from "../../component/DatePicker";
@@ -10,25 +10,26 @@ import opacity from "../../styles/opacity";
 import Selector from "../Selector";
 import { server, api } from "../../assets/constant";
 import axios from "axios";
+import history from "../../containers/History";
 import {Link} from "react-router-dom";
 import { Redirect } from "react-router-dom";
-const cate = ['Công nghệ', 'Giáo dục','Giải trí','Khoa học','Kinh tế','Pháp luật','Thế giới','Thể thao','Văn hóa','Xã hội', 'Y tế']
-const loc =["Việt Nam", "World"]
-const tag =["Salary", "Environment", "Regime"]
+const select_cate = ['Công nghệ', 'Giáo dục','Giải trí','Khoa học','Kinh tế','Pháp luật','Thế giới','Thể thao','Văn hóa','Xã hội', 'Y tế']
+const select_loc =["Việt Nam", "World"]
+const select_tag =["Salary", "Environment", "Regime"]
 class SearhBar extends Component{
     constructor(props){
         super(props)
-        this.state={
-            query: "",
-            startDate: "",
-            endDate: "",
-            cate: [],
-            tag: "",
-            loc:  ""
-        }
+        // this.state={
+        //     query: "",
+        //     startDate: "",
+        //     endDate: "",
+        //     cate: [],
+        //     tag: "",
+        //     loc:  "",
+        // }
     }
     render(){
-        var {ocSearchBar, saveSearchQuery, query} = this.props
+        var {ocSearchBar, saveSearchQuery, query, text, changeSearchStat, startDate, endDate, cate, tag, loc} = this.props
         return(
             <div className={css(d.flex,w.w_100,h.h_100,jc.c, ai.c)} >
                 <div className={css( pos.absolute, w.w_100, h.h_100, bc.black)} style={{opacity:0.5}}></div>
@@ -37,19 +38,18 @@ class SearhBar extends Component{
                         <div className={css(fs.md, fw.w700, clr.black)}> Find :</div>
                         <TextField 
                             onChange = {(ev)=>{
-                                this.setState({query: ev.target.value})}} 
-                            value = {this.state.query} 
+                                changeSearchStat({text: ev.target.value})}} 
+                            value = {text} 
                             style={{width: 250}}
-                            floatingLabelText = "Search a Link" 
                             name = "searchLink" />
                     </div>
                     <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3)}>
                         <div className={css(fs.md, fw.w700, clr.black)}> StartDate :</div>
                         <div>
                             <DatePicker
-                                time={"2019-01-01T21:11:54"}
+                                time={"2019-01-01T00:00:00"}
                                 onChangeStas={(time)=>{
-                                    this.setState({startDate: time})
+                                    changeSearchStat({startDate: time})
                                 }}
                             />
                         </div>
@@ -58,9 +58,9 @@ class SearhBar extends Component{
                         <div className={css(fs.md, fw.w700, clr.black)}> End Date :</div>
                         <div>
                         <DatePicker
-                                time={"2019-01-01T21:11:54"}
+                                time={"2019-12-01T00:00:00"}
                                 onChangeStas={(time)=>{
-                                    this.setState({endDate: time})
+                                    changeSearchStat({endDate: time})
                                 }}
                             />
                         </div>
@@ -68,51 +68,67 @@ class SearhBar extends Component{
                     <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3, m.mg_b_sm)}>
                         <div className={css(fs.md, fw.w700, clr.black)}> Location :</div>
                         <div>
-                        <Selector  name={"Location"} items={loc} onChangeStas={(type)=>{
-                            this.setState({loc: type})
+                        <Selector  name={"Location"} items={select_loc} onChangeStas={(type)=>{
+                            changeSearchStat({loc: type})
                         }}/>
                         </div>
                     </div>   
                     <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3,  m.mg_b_sm)}>
                         <div className={css(fs.md, fw.w700, clr.black)}> Category :</div>
                         <div>
-                        <Selector  name={"Cate"} items={cate} onChangeStas={(type)=>{
-                            this.setState({cate: type})
+                        <Selector  name={"Cate"} items={select_cate} onChangeStas={(type)=>{
+                            changeSearchStat({cate: type})
                         }}/>
                         </div>
                     </div>       
                     <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3,  m.mg_b_sm)}>
                         <div className={css(fs.md, fw.w700, clr.black)}> Tag :</div>
                         <div>
-                        <Selector  name={"Tag"} items={tag} onChangeStas={(type)=>{
-                            this.setState({
+                        <Selector  name={"Tag"} items={select_tag} onChangeStas={(type)=>{
+                            changeSearchStat({
                                 tag: type
                             })
                         }}/>
                         </div>
                     </div>    
                     <div className={css(d.flex, w.w_100, ai.c,jc.sa, zi.zi3,  m.mg_b_sm)}>
-                        <Link
-                            to="/search"
+                        {/* <Button
+                            // to={"/search/"+url}
                             onClick={()=>{
                                 const {query, startDate, endDate, loc, cate, tag} = this.state
-                                var url = server.url + api.searchPosts(query,this.getDayMonthYear(startDate).substring(0,10)+ "T00:00:00Z",this.getDayMonthYear(endDate).substring(0,10)+"T00:00:00Z", loc, cate, tag,0, 10)
-                                saveSearchQuery({
-                                    query: url
-                                })
-                                ocSearchBar({
-                                    isOpen:false
-                                })                            
+                                var url = api.searchPosts(query,this.getDayMonthYear(startDate).substring(0,10)+ "T00:00:00Z",this.getDayMonthYear(endDate).substring(0,10)+"T00:00:00Z", loc, cate, tag,0, 10)
+                                // ocSearchBar({
+                                //     isOpen:false
+                                // }) 
+                                var arr_url = url.split("/")
+                                arr_url[0] = "q"
+                                url = arr_url.join("?")
+                                console.log("url "+ url)
+                                // history.push({pathname: '/search/'+ url.replace("/", "?") })                          
                             }}
                             className={css(texd.none)}
-                        >
-                        <Button 
-                            variant="contained" 
-                            color="secondary" 
-                            >
-                            Search
-                        </Button>
-                        </Link>
+                        > */}
+                            <Button 
+                                variant="contained" 
+                                color="secondary" 
+                                onClick={()=>{
+                                    // const {query, startDate, endDate, loc, cate, tag} = this.state
+                                    var url = api.searchPosts(query,this.getDayMonthYear(startDate).substring(0,10)+ "T00:00:00Z",this.getDayMonthYear(endDate).substring(0,10)+"T00:00:00Z", loc, cate, tag,0, 10)
+                                    ocSearchBar({
+                                        isOpen:false
+                                    }) 
+                                    saveSearchQuery({
+                                        query: server.url+ url
+                                    })
+                                    var arr_url = url.split("/")
+                                    arr_url[0] = "q"
+                                    url = arr_url.join("?")
+                                    history.push({pathname: '/search/'+ url})                          
+                                }}
+                                >
+                                Search
+                            </Button>
+                        {/* </Button> */}
                         <Button 
                             variant="contained" 
                             color="secondary" 
@@ -142,7 +158,13 @@ class SearhBar extends Component{
 }
 
 const mapStateToProps = state =>({
-    query: state.searchBar.query
+    query: state.searchBar.query,
+    text: state.searchBar.text,
+    startDate: state.searchBar.startDate,
+    endDate: state.searchBar.endDate,
+    cate: state.searchBar.cate,
+    tag: state.searchBar.tag,
+    loc:  state.searchBar.loc
 })
 
 const mapDispatchToProps = (dispatch) => {
@@ -152,6 +174,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         saveSearchQuery: (payload)=>{
             dispatch(saveSearchQuery(payload))
+        },
+        changeSearchStat: (payload)=>{
+            dispatch(changeSearchStat(payload))
         }
     }
 }

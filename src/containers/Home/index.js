@@ -1,7 +1,6 @@
 import React,{Component} from 'react'
 import { w, d, fled, h, zi, pad, bc, pos , bgu, m, fle, ff, fw, lets, clr, text, ai, jc, fs, linh, hov, opa, bg, b, flew, texd, lst, fil} from "../../styles/themes"
 import {css, StyleSheet} from "aphrodite";
-import {images as img, images_v2 as img2} from "../../assets/images";
 import HostPostItem from "../../component/HostPostItem";
 import SideContent from "../../component/SideContent";
 import PaginationPost from "../../component/PaginationPost";
@@ -11,7 +10,7 @@ import { Link} from "react-router-dom";
 import axios from "axios";
 import {server, api } from "../../assets/constant";
 import LoadView from "../LoadView";
-
+import {image} from "../../assets/images";
 class Home extends Component{
     componentDidMount(){
         const {loadPagePosts} = this.props
@@ -43,7 +42,7 @@ class Home extends Component{
                     <div className={css(d.flex, fled.r, w.w_100)}>
                         <div class={css(d.flex, fle.flex_2,)}>
                             <div className={ css(d.flex, fled.c, fle.flex_1, ai.fs, jc.fe, zi.zi1,)}>   
-                                <img src={img.cate_bg} className={css(pos.absolute, w.w_100, h.bg_img, zi.zi_1, fil.b50)} style={{objectFit:"cover"}}></img>
+                                <img src={image.image_big_post} className={css(pos.absolute, w.w_100, h.bg_img, zi.zi_1, fil.b50)} style={{objectFit:"cover"}}></img>
                                 <div className={css(d.flex, fled.c, w.w_100, h.h_100, m.lg, jc.fe)}>
                                     <Link to={"/category/" + src.processor_category_classify} 
                                         className={css(ff.Roboto, fw.w500, fs.sm, clr.white, lets.sm, text.u, texd.none, hov.dis_underline)
@@ -56,9 +55,11 @@ class Home extends Component{
                                     >
                                         {src.title}
                                     </Link>
-                                    <div className={css(ff.Roboto, fw.w500, lets._esm, clr.white_smoke, text.u, fs.esm, m.mg_t_lg)}>
-                                        {src.published_date.replace("T", " ").replace("Z", "").slice(0,16)}
-                                    </div>
+                                    { typeof src.published_date !== "undefined"?
+                                        (<div className={css(ff.Roboto, fw.w500, lets._esm, clr.white_smoke, text.u, fs.esm, m.mg_t_lg)}>
+                                            {src.published_date.replace("T", " ").replace("Z", "").slice(0,16)}
+                                        </div>): (<div></div>)
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -71,7 +72,7 @@ class Home extends Component{
                                             const src = item._source;
                                             return(
                                                 <HostPostItem
-                                                    imageUrl={src.images && src.images.length?src.images[0]:img.post_img} title={src.title} datePublished={src.published_date} key={index} item={item} level={1}
+                                                    imageUrl={src.images && src.images.length?src.images[0]:image.post_img} title={src.title} datePublished={src.published_date} key={index} item={item} level={1}
                                                 />
                                             )
                                         })

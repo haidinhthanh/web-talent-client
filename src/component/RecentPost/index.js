@@ -3,8 +3,7 @@ import {connect} from "react-redux";
 import { w, d, fled, h, m, fle, ff, fw, clr, jc, fs, linh, hov, texd, bc,} from "../../styles/themes"
 import {css, StyleSheet} from "aphrodite";
 import {Link} from "react-router-dom";
-import {images} from "../../assets/images"
-import df from "./post_img.jpg"
+import {image} from "../../assets/images"
 import axios from "axios";
 import {server, api} from "../../assets/constant";
 import {loadRecentPost,} from "../../store/actions/post";
@@ -32,7 +31,7 @@ class RecentPost extends Component{
                     if (type == "content"){
                         return (
                             <div className={css(d.flex, m.sm)} key={index}>
-                                <img src={src.images && src.images.length?src.images[0]: df} className={css(w.lg,h.lg, m.sm, fle.flex_1)} style={{objectFit:"fill"}}></img>
+                                <img src={src.images && src.images.length?src.images[0]: image.post_img} className={css(w.lg,h.lg, m.sm, fle.flex_1)} style={{objectFit:"fill"}}></img>
                                 <div className={css(d.flex, fled.c, m.sm, jc.sb, fle.flex_2)}>
                                     <Link 
                                         to={"/view_post/" + item._id}
@@ -50,7 +49,7 @@ class RecentPost extends Component{
                     else if( type == "footer"){
                         return (
                             <div className={css(d.flex, m.sm)} key={index}>
-                                <img src={src.images && src.images.length?src.images[0]: df} className={css(w.lg,h.lg, m.sm, fle.flex_1)} style={{objectFit:"fill"}}></img>
+                                <img src={src.images && src.images.length?src.images[0]: image.post_img} className={css(w.lg,h.lg, m.sm, fle.flex_1)} style={{objectFit:"fill"}}></img>
                                 <div className={css(d.flex, fled.c, m.sm, jc.sb, fle.flex_2)}>
                                     <Link 
                                         to={"/view_post/" + item._id}
@@ -68,7 +67,7 @@ class RecentPost extends Component{
                     else{
                         return (
                             <div className={css(d.flex, m.sm)}>
-                                <img src={src.images && src.images.length?src.images[0]:images.post_img} className={css(w.lg,h.lg, m.sm)} style={{objectFit:"fill"}}></img>
+                                <img src={src.images && src.images.length?src.images[0]:image.post_img} className={css(w.lg,h.lg, m.sm)} style={{objectFit:"fill"}}></img>
                                 <div className={css(d.flex, fled.c, m.sm, jc.sb)}>
                                     <div className={css(ff.IBM, fw.w700, fs.esm, linh.h1_25)}>
                                         {src.title}

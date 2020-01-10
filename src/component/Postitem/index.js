@@ -2,7 +2,7 @@ import React,{Component} from "react";
 import {css} from "aphrodite";
 import {w, d, fled, h,  bc,  m, ff, fw, lets, clr, text,fs, linh, hov,texd, fle, jc, ai } from "../../styles/themes";
 import {Link} from "react-router-dom";
-import {images as img, images_v2 as img2} from "../../assets/images";
+import {image} from "../../assets/images";
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 class PostItem extends Component{
     
@@ -16,8 +16,7 @@ class PostItem extends Component{
     }
 
     addDefaultSrc= (ev)=>{
-        const {level} = this.props
-        ev.target.src = ( level == 1 ? img.post_img: img2.post_img)
+        ev.target.src =image.post_imgs
       }
     render() {
         const {level} = this.props
@@ -27,7 +26,7 @@ class PostItem extends Component{
         return (
             <div className={css(d.flex, fled.c, m.lg, w.w_40, bc.white,)}>
                 <img 
-                    src={images && images.length? images[0]: ( level == 1 ? img.post_img: img2.post_img)} 
+                    src={images && images.length? images[0]: image.post_img} 
                     className={css(w.w_100,h.elg)} 
                     style={{objectFit:"fill"}}
                     onError={this.addDefaultSrc}
@@ -46,9 +45,11 @@ class PostItem extends Component{
                         {title}
                     </Link>
                     <div className={css(d.flex, ai.c,)}>
-                        <div className={css(ff.Roboto, fs.esm, fw.w400, linh.h1_5, clr.dim_gray,  m.mg_t_sm)}> 
-                            {published_date.replace("T", " ").replace("Z", "").slice(0,16)}
-                        </div>
+                        { typeof published_date != "undefined"?
+                            (<div className={css(ff.Roboto, fs.esm, fw.w400, linh.h1_5, clr.dim_gray,  m.mg_t_sm)}> 
+                                {published_date.replace("T", " ").replace("Z", "").slice(0,16)}
+                            </div>):(<div></div>)
+                        }
                         <div className={css(m.mg_l_md)}>
                             <EqualizerIcon style={{width: 36, height:36, color: "#696969"}}></EqualizerIcon>
                         </div>

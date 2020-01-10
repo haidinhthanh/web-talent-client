@@ -1,15 +1,16 @@
 import React,{Component} from "react";
 import { clr, d, h, w, fle, fled, bc, ai, jc, ff, fw, linh, fs, opa, pos, flew, zi, fil, pad } from "../../styles/themes";
 import { css } from "aphrodite";
-import {images_v2} from "../../assets/images";
+import {image} from "../../assets/images";
 import {connect} from "react-redux";
 import {cities, nations, provinces} from "../../assets/location_data";
+import {ocSearchBar, saveSearchQuery} from "../../store/actions/seachbar";
 import {loadPagePost, changeWebStas} from "../../store/actions/post";
 import SideContent from "../../component/SideContent";
 import PaginationPost from "../../component/PaginationPost";
-import { server, api } from "../../assets/constant";
 import LoadView from "../LoadView";
 import axios from "axios";
+import { server } from "../../assets/constant";
 
 class SearchPost extends Component{  
     constructor(props){
@@ -19,8 +20,15 @@ class SearchPost extends Component{
         }
     }
     componentDidMount(){
+        var {url} =this.props.match.params
+        const {pagePost, saveSearchQuery} =this.props
+        var arr_url = url.split("?")
+        arr_url[0] = ""
+        url = arr_url.join("/")
+        saveSearchQuery({
+            query: server.url+ url
+        })
         const {loadPagePosts, query} = this.props
-        console.log("query "+query)
         axios.get(query)
         .then(res => {
             const pagePosts = res.data.data;
@@ -50,13 +58,14 @@ class SearchPost extends Component{
         this.setState({isRend: false})
     }
     render() {
-        const {pagePost} =this.props.match.params
+        const {pagePost, saveSearchQuery} =this.props
         const {isRend} = this.state
+        
         if (isRend){
         return (
             <div className={css(d.flex,w.w_100, fled.c, flew.w, pos.relative,) } >
                 <div className={css(d.flex,h.lg, w.w_100, h.elg, ai.c, jc.c)}>
-                    <img src={images_v2.loc_bg} className={css(pos.absolute, w.w_100, h.elg, zi.zi1,)} style={{objectFit:"cover"}}></img>
+                    <img src={image.post_img} className={css(pos.absolute, w.w_100, h.elg, zi.zi1,)} style={{objectFit:"cover"}}></img>
                     <div className={css(d.flex, ff.IBM, fw.w700, linh.h1_25, clr.white, fs.lg,zi.zi3)}>
                         Search Result
                     </div>
@@ -89,6 +98,9 @@ const mapDispatchToProps = (dispatch) => {
         loadPagePosts: (payload)=>{
             dispatch(loadPagePost(payload))
         },
+        saveSearchQuery: (payload)=>{
+            dispatch(saveSearchQuery(payload))
+        }
     }
 }
 

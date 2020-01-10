@@ -3,7 +3,7 @@ import Header from "../Header";
 import Routes from "../../routes";
 import SideBar from "../../component/SideBar";
 import Footer from "../../containers/Footer";
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, Router} from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "../../store";
 import {css} from "aphrodite";
@@ -13,7 +13,7 @@ class App extends Component{
     render(){
         return(
             <Provider store={store} >
-                <BrowserRouter history={history}>
+                <Router history={history}>
                     <div className={css(d.flex, fled.c, w.w_100, h.h_100)}
                     >
                         <Header/>
@@ -21,7 +21,7 @@ class App extends Component{
                         <Footer/>
                         <SideBar/>
                     </div>
-                </BrowserRouter>
+                </Router>
             </Provider>
         )
     }
