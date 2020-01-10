@@ -1,16 +1,12 @@
 {
-  
   "name": "nhantai.org",
   "version": "1.0.0",
   "description": "talent newspaper",
-  "homepage": "https://haidinhthanh.github.io/web-talent",
-  "main": "build/index.js",
+  "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
     "build": "webpack --mode production",
-    "format": "prettier --write \"src/**/*.js\"",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "format": "prettier --write \"src/**/*.js\""
   },
   "author": "haidt",
   "license": "ISC",
@@ -46,7 +42,6 @@
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^3.2.0",
     "file-loader": "^5.0.2",
-    "gh-pages": "^2.2.0",
     "html-webpack-plugin": "^3.2.0",
     "prettier": "1.19.1",
     "redux-devtools": "^3.5.0",
