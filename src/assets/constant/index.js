@@ -1,6 +1,6 @@
 export const server = {
-    // url: "https://54.68.196.78:8080"
-    url: "https://localhost:8080",
+    url: "https://54.68.196.78:8080"
+    // url: "https://localhost:8080",
 }
 
 
