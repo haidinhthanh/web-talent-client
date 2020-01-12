@@ -10,13 +10,23 @@ import {server, api} from "../../assets/constant";
 import axios from "axios";
 import {changeChartStas} from "../../store/actions/chart";
 import cursor from "../../styles/cursor";
+import LoadView from "../LoadView";
 class ChartViewDashBoard extends Component{
     constructor(props){
         super(props)
+        this.state ={
+            isRended : false
+        }
     }
     componentDidMount(){
-        const {loadPost} = this.props
-        var url = server.url + api.getAllPost
+        const {loadPost, startTime, endTime} = this.props
+        var url = server.url + api.searchPosts("", startTime, endTime,"", "", "", 0, 10000)
+        changeChartStas({
+            startRend: false,
+        })
+        this.setState({
+            isRended : false
+        })
         axios.get(url)
         .then(res => {
             const posts = res.data.data;
@@ -24,7 +34,43 @@ class ChartViewDashBoard extends Component{
                 posts: posts
             })
         })
+        .then(()=>{
+            changeChartStas({
+                startRend: true,
+            })
+            this.setState({
+                isRended : true
+            })
+        })
         .catch(error => console.log(error));
+    }
+    componentDidUpdate(prevProps, prevState){
+        if (this.props.startTime != prevProps.startTime || this.props.endTime != prevProps.endTime){
+            const {loadPost, startTime, endTime} = this.props
+            changeChartStas({
+                startRend: false,
+            })
+            this.setState({
+                isRended : false
+            })
+            var url = server.url + api.searchPosts("", startTime, endTime,"", "", "", 0, 10000)
+            axios.get(url)
+            .then(res => {
+                const posts = res.data.data;
+                loadPost({
+                    posts: posts
+                })
+            })
+            .then(()=>{
+                changeChartStas({
+                    startRend: true,
+                })
+                this.setState({
+                    isRended : true
+                })
+            })
+            .catch(error => console.log(error));
+        }
     }
     renderChart = (chartType, aspect, dataOb)=>{
         if(chartType == "Pie Chart"){
@@ -78,36 +124,67 @@ class ChartViewDashBoard extends Component{
 
     render() {
         const {chartType, aspect, endTime, startTime, startRend, lstBarValue} = this.props
+        const {isRended} = this.state
         var rendChart = null
         if(startRend){
             const dataobject = this.getdataChart(chartType, aspect, startTime, endTime, lstBarValue)
             rendChart = this.renderChart(chartType, aspect, dataobject)
         }
-        return (
-            <div className={css(d.flex, fled.c,bc.white_smoke, pad.lg, mih.mih500)}>
-                <div className={css(ff.IBM, fw.w700, fs.lg, d.flex, ai.c, jc.c, cursor.pointer)}
-                    onClick={()=>{
-                        changeChartStas({
-                            startRend: false,
-                            aspect: ""
-                        })
-                    }}
-                >
-                    Statistical Post Views
-                </div>
+        if(isRended){
+            return (
+                <div className={css(d.flex, fled.c,bc.white_smoke, pad.lg, mih.mih500)}>
+                    <div className={css(ff.IBM, fw.w700, fs.lg, d.flex, ai.c, jc.c, cursor.pointer)}
+                        onClick={()=>{
+                            changeChartStas({
+                                startRend: false,
+                                aspect: ""
+                            })
+                        }}
+                    >
+                        Statistical Post Views
+                    </div>
 
-                <div className={css(d.flex, bc.white, b.br_45, b.b_l)}>
-                    <div className={css(d.flex,fle.flex_2,ai.c, jc.c,)}>
-                        {   
-                            startRend && rendChart
-                        }
-                    </div>
-                    <div className={css(fle.flex_1, b.br_tr_45, b.br_br_45)}>
-                        <ChartControl/>
+                    <div className={css(d.flex, bc.white, b.br_45, b.b_l)}>
+                        <div className={css(d.flex,fle.flex_2,ai.c, jc.c,)}>
+                            {   
+                                startRend && rendChart
+                            }
+                        </div>
+                        <div className={css(fle.flex_1, b.br_tr_45, b.br_br_45)}>
+                            <ChartControl/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
+        else{
+            return (
+                <div className={css(d.flex, fled.c,bc.white_smoke, pad.lg, mih.mih500)}>
+                    <div className={css(ff.IBM, fw.w700, fs.lg, d.flex, ai.c, jc.c, cursor.pointer)}
+                        onClick={()=>{
+                            changeChartStas({
+                                startRend: false,
+                                aspect: ""
+                            })
+                        }}
+                    >
+
+                        Statistical Post Views
+                    </div>
+
+                    <div className={css(d.flex, bc.white, b.br_45, b.b_l)}>
+                        <div className={css(d.flex,fle.flex_2,ai.c, jc.c,)}>
+                            {   
+                                startRend ?(<LoadView></LoadView>):(<div></div>)
+                            }
+                        </div>
+                        <div className={css(fle.flex_1, b.br_tr_45, b.br_br_45)}>
+                            <ChartControl/>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
     }
 
     getDateRange = (startDate, endDate) => {

@@ -23,7 +23,7 @@ const Routes = () => {
             <Route path="/feature/:feature" component={Feature}/>
             <Route path="/analystic/Posts" component={ChartDashBoard}/>
             <Route path="/analystic/Views" component={ChartViewDashBoard}/>
-            <Route path="/search/:url" component={SearchPost}/>
+            <Route path="/search/" component={SearchPost}/>
         </Switch>
         )
     }

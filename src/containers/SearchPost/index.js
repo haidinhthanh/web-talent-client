@@ -10,7 +10,8 @@ import SideContent from "../../component/SideContent";
 import PaginationPost from "../../component/PaginationPost";
 import LoadView from "../LoadView";
 import axios from "axios";
-import { server } from "../../assets/constant";
+import { server, api} from "../../assets/constant";
+import history from "../../containers/History";
 
 class SearchPost extends Component{  
     constructor(props){
@@ -20,15 +21,7 @@ class SearchPost extends Component{
         }
     }
     componentDidMount(){
-        var {url} =this.props.match.params
-        const {pagePost, saveSearchQuery,} =this.props
-        var arr_url = url.split("?")
-        arr_url[0] = ""
-        url = arr_url.join("/")
-        saveSearchQuery({
-            query: server.url+ url
-        })
-        const {loadPagePosts, query} = this.props
+        const {loadPagePosts, query, text, startDate, endDate, cate, tag, loc} = this.props
         axios.get(query)
         .then(res => {
             const pagePosts = res.data.data;
@@ -39,18 +32,14 @@ class SearchPost extends Component{
         })
         .catch(error => console.log(error));
     }
+    
     componentDidUpdate(prevProps, prevState){
-        if ((this.props.query !== prevProps.query)) {
-            var {url} =this.props.match.params
-            const {pagePost, saveSearchQuery} =this.props
-            var arr_url = url.split("?")
-            arr_url[0] = ""
-            url = arr_url.join("/")
-            saveSearchQuery({
-                query: server.url+ url
+        if (this.props.query !==prevProps.query){
+            const {loadPagePosts, query, text, startDate, endDate, cate, tag, loc} = this.props
+            this.setState({
+                isRend: false
             })
-            const {loadPagePosts, query} = this.props
-            axios.get(query)
+                axios.get(query)
             .then(res => {
                 const pagePosts = res.data.data;
                 loadPagePosts({
@@ -59,7 +48,7 @@ class SearchPost extends Component{
                 this.setState({isRend: true})
             })
             .catch(error => console.log(error));
-        }
+            }
     }
     componentWillUnmount(){
         this.setState({isRend: false})
@@ -67,7 +56,6 @@ class SearchPost extends Component{
     render() {
         const {pagePost, saveSearchQuery, query} =this.props
         const {isRend} = this.state
-        console.log("urt " + query)
         if (isRend){
         return (
             <div className={css(d.flex,w.w_100, fled.c, flew.w, pos.relative,) } >
@@ -98,10 +86,19 @@ class SearchPost extends Component{
 }
 const mapStateToProps = state =>({
     pagePost: state.pagePost.pagePosts,
-    query: state.searchBar.query
+    query: state.searchBar.query,
+    text: state.searchBar.text,
+    startDate: state.searchBar.startDate,
+    endDate: state.searchBar.endDate,
+    cate: state.searchBar.cate,
+    tag: state.searchBar.tag,
+    loc:  state.searchBar.loc
 })
 const mapDispatchToProps = (dispatch) => {
     return {
+        ocSearchBar: (payload)=>{
+            dispatch(ocSearchBar(payload))
+        },
         loadPagePosts: (payload)=>{
             dispatch(loadPagePost(payload))
         },

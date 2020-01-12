@@ -40,7 +40,7 @@ class Pagination extends React.Component {
                     })
                 }
                 else{
-                    this.props.parentFragement.scrollIntoView({behavior:"smooth"})
+                    // this.props.parentFragement.scrollIntoView({behavior:"smooth"})
                 }
             })
             .catch(error => console.log(error));

@@ -36,7 +36,6 @@ class DatePicker extends Component{
             format="dd/MM/yyyy"
             value={selectedDate}
             onChange={(date)=>{
-              console.log("111111111111", date)
               this.handleDateChange(date)
             }}
             KeyboardButtonProps={{
@@ -49,11 +48,11 @@ class DatePicker extends Component{
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-      changeChartStas: (payload)=>{
-          dispatch(changeChartStas(payload))
-      }
-  }
-}
-export default connect(null,mapDispatchToProps)(DatePicker);
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//       changeChartStas: (payload)=>{
+//           dispatch(changeChartStas(payload))
+//       }
+//   }
+// }
+export default connect(null,null)(DatePicker);

@@ -71,7 +71,7 @@ class BarChartForm extends Component{
                     </div>
                     <div className={css(d.flex, ai.c, fle.flex_1)}>
                         <DatePicker
-                            time={"2019-01-01T21:11:54"}
+                            time={"2015-01-01T00:00:00"}
                             onChangeStas={(time)=>{
                                 changeChartStas({
                                     startTime: time,
@@ -86,7 +86,7 @@ class BarChartForm extends Component{
                     </div>
                     <div className={css(d.flex, ai.c, fle.flex_1)}>
                         <DatePicker
-                            time={"2019-12-01T21:11:54"}
+                            time={"2020-12-01T00:00:00"}
                             onChangeStas={(time)=>{
                                 changeChartStas({
                                     endTime: time

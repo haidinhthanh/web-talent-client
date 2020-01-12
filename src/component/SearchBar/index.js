@@ -13,6 +13,7 @@ import axios from "axios";
 import history from "../../containers/History";
 import {Link} from "react-router-dom";
 import { Redirect } from "react-router-dom";
+import { is } from "date-fns/locale";
 const select_cate = ['Công nghệ', 'Giáo dục','Giải trí','Khoa học','Kinh tế','Pháp luật','Thế giới','Thể thao','Văn hóa','Xã hội', 'Y tế']
 const select_loc =["Việt Nam", "World"]
 const select_tag =["Salary", "Environment", "Regime"]
@@ -20,17 +21,24 @@ const select_tag =["Salary", "Environment", "Regime"]
 class SearhBar extends Component{
     constructor(props){
         super(props)
-        // this.state={
-        //     query: "",
-        //     startDate: "",
-        //     endDate: "",
-        //     cate: [],
-        //     tag: "",
-        //     loc:  "",
-        // }
+        this.state = {
+            isAdvanced: false
+        }
+    }
+    componentDidMount(){
+        var {query, text, changeSearchStat, startDate, endDate, cate, tag, loc} = this.props
+        changeSearchStat({
+            text: text,
+            startDate: startDate,
+            endDate: endDate,
+            cate: "",
+            tag: "",
+            loc: ""
+        })
     }
     render(){
         var {ocSearchBar, saveSearchQuery, query, text, changeSearchStat, startDate, endDate, cate, tag, loc} = this.props
+        const {isAdvanced} = this.state
         return(
             <div className={css(d.flex,w.w_100,h.h_100,jc.c, ai.c)} >
                 <div className={css( pos.absolute, w.w_100, h.h_100, bc.black)} style={{opacity:0.5}}></div>
@@ -44,75 +52,89 @@ class SearhBar extends Component{
                             style={{width: 250}}
                             name = "searchLink" />
                     </div>
-                    <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3)}>
-                        <div className={css(fs.md, fw.w700, clr.black)}> StartDate :</div>
-                        <div>
-                            <DatePicker
-                                time={startDate}
-                                onChangeStas={(time)=>{
-                                    changeSearchStat({startDate: time})
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3)}>
-                        <div className={css(fs.md, fw.w700, clr.black)}> End Date :</div>
-                        <div>
-                        <DatePicker
-                                time={"2019-12-01T00:00:00"}
-                                onChangeStas={(time)=>{
-                                    changeSearchStat({endDate: time})
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3, m.mg_b_sm)}>
-                        <div className={css(fs.md, fw.w700, clr.black)}> Location :</div>
-                        <div>
-                        <Selector  name={"Location"} items={select_loc} onChangeStas={(type)=>{
-                            changeSearchStat({loc: type})
-                        }}/>
-                        </div>
-                    </div>   
-                    <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3,  m.mg_b_sm)}>
-                        <div className={css(fs.md, fw.w700, clr.black)}> Category :</div>
-                        <div>
-                        <Selector  name={"Cate"} items={select_cate} onChangeStas={(type)=>{
-                            changeSearchStat({cate: type})
-                        }}/>
-                        </div>
-                    </div>       
-                    <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3,  m.mg_b_sm)}>
-                        <div className={css(fs.md, fw.w700, clr.black)}> Tag :</div>
-                        <div>
-                        <Selector  name={"Tag"} items={select_tag} onChangeStas={(type)=>{
-                            changeSearchStat({
-                                tag: type
-                            })
-                        }}/>
-                        </div>
-                    </div>    
-                    <div className={css(d.flex, w.w_100, ai.c,jc.sa, zi.zi3,  m.mg_b_sm)}>
-                            <Button 
-                                variant="contained" 
-                                color="secondary" 
-                                onClick={()=>{
-                                    var url = api.searchPosts(text,this.getDayMonthYear(startDate).substring(0,10)+ "T00:00:00Z",this.getDayMonthYear(endDate).substring(0,10)+"T00:00:00Z", loc, cate, tag,0, 10)
-                                    
-                                    ocSearchBar({
-                                        isOpen:false
-                                    }) 
-                                    changeSearchStat({
-                                        query: server.url+ url
-                                    })
-                                    var arr_url = url.split("/")
-                                    arr_url[0] = "q"
-                                    url = arr_url.join("?")
-                                    history.push({pathname: '/search/'+ url})                          
-                                }}
-                                >
-                                Search
-                            </Button>
+                    
+                    {
+                        isAdvanced ? (
+                        <div className={css(d.flex, fled.c, w.w_100, ai.c,jc.sb, zi.zi3,)}>
+                            <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3)}>
+                                <div className={css(fs.md, fw.w700, clr.black)}> StartDate :</div>
+                                <div>
+                                    <DatePicker
+                                        time={startDate}
+                                        onChangeStas={(time)=>{
+                                            var startDate = this.getDayMonthYear(time).substring(0,10)+ "T00:00:00"
+                                            changeSearchStat({startDate: startDate})
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3)}>
+                                    <div className={css(fs.md, fw.w700, clr.black)}> End Date :</div>
+                                    <div>
+                                    <DatePicker
+                                            time={endDate}
+                                            onChangeStas={(time)=>{
+                                                var endDate = this.getDayMonthYear(time).substring(0,10)+ "T00:00:00"
+                                                changeSearchStat({endDate: endDate})
+                                            }}
+                                        />
+                                    </div>
+                            </div>
+                            <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3, m.mg_b_sm)}>
+                                    <div className={css(fs.md, fw.w700, clr.black)}> Location :</div>
+                                    <div>
+                                    <Selector  name={"Location"} items={select_loc} onChangeStas={(type)=>{
+                                        changeSearchStat({loc: type})
+                                    }}/>
+                                    </div>
+                            </div>  
+                            <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3,  m.mg_b_sm)}>
+                                <div className={css(fs.md, fw.w700, clr.black)}> Category :</div>
+                                <div>
+                                <Selector  name={"Cate"} items={select_cate} onChangeStas={(type)=>{
+                                    changeSearchStat({cate: type})
+                                }}/>
+                                </div>
+                            </div>  
+                            <div className={css(d.flex, w.w_100, ai.c,jc.sb, zi.zi3,  m.mg_b_sm)}>
+                                <div className={css(fs.md, fw.w700, clr.black)}> Tag :</div>
+                                <div>
+                                    <Selector  name={"Tag"} items={select_tag} onChangeStas={(type)=>{
+                                        changeSearchStat({
+                                            tag: type
+                                        })
+                                    }}/>
+                                </div>
+                            </div> 
+                        </div>):(<div></div>) 
+                    }       
+                    <div className={css(d.flex, w.w_100, ai.c,jc.sa, zi.zi3,  m.mg_t_lg)}>
+                        <Button 
+                            variant="contained" 
+                            color="secondary" 
+                            onClick={()=>{
+                                var url = api.searchPosts(text,startDate+"Z", endDate+"Z", loc, cate, tag,0, 10)                  
+                            ocSearchBar({
+                                    isOpen:false
+                                }) 
+                                saveSearchQuery({
+                                    query: server.url+ api.searchPosts(text,startDate+"Z",endDate+"Z", loc, cate, tag,0, 10)
+                                })
+                                history.push({pathname: '/search'})                     
+                            }}
+                            >
+                            Search
+                        </Button>
+                        <Button 
+                            variant="contained" 
+                            color="secondary" 
+                            onClick={()=>{
+                                this.setState({
+                                    isAdvanced: !isAdvanced
+                                })
+                            }}>
+                            Advanced Search
+                        </Button>
                         <Button 
                             variant="contained" 
                             color="secondary" 
@@ -128,12 +150,9 @@ class SearhBar extends Component{
             </div>
         )
     }
-    redirectSearch = ()=>{
-        return <Redirect to="/search"></Redirect>
-    }
     getDayMonthYear= (dateObj)=>{
         var month = dateObj.getUTCMonth() + 1; //months from 1-12
-        var day = dateObj.getUTCDate();
+        var day = dateObj.getUTCDate()+1;
         var year = dateObj.getUTCFullYear();
         var displayDay = day <10 ? '0'+ day: day
         var displayMonth = month < 10 ? '0'+month : month;

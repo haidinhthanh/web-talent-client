@@ -55,7 +55,6 @@ class PostView extends Component{
             else{
                 page_source = source
             }
-            console.log(":::" +typeof summary)
             return (
                 <div className={css(d.flex, w.w_100)} 
                 ref ={(el)=> this.fragment = el}
